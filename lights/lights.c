@@ -45,7 +45,7 @@ static struct light_state_t g_battery;
 #define BUTTON_BRIGHTNESS_FILE "/sys/class/leds/button-backlight/brightness"
 
 #define LCD_BRIGHTNESS_FILE "/sys/devices/soc/c900000.qcom,mdss_mdp/c900000.qcom,mdss_mdp:qcom,mdss_fb_primary/leds/lcd-backlight/brightness"
-#define LCD_MAX_BRIGHTNESS_FILE "/kernel/debug/mdss_panel_fb0/intf0/brightness_max"
+#define LCD_MAX_BRIGHTNESS_FILE "/sys/devices/soc/c900000.qcom,mdss_mdp/c900000.qcom,mdss_mdp:qcom,mdss_fb_primary/leds/lcd-backlight/max_brightness"
 
 #define RED_LED_BRIGHTNESS_FILE "/sys/class/leds/red/brightness"
 #define GREEN_LED_BRIGHTNESS_FILE "/sys/class/leds/green/brightness"
