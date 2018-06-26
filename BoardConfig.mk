@@ -19,6 +19,8 @@
 # product configuration (apps).
 #
 include build/make/target/board/generic_arm64_a/BoardConfig.mk
+include build/make/target/product/verity.mk
+
 BOARD_PATH := device/nubia/nx609j
 
 PRODUCT_FULL_TREBLE := true
@@ -27,7 +29,6 @@ PRODUCT_SHIPPING_API_LEVEL := 27
 TARGET_NO_KERNEL := false
 BOARD_BUILD_DISABLED_VBMETAIMAGE := false
 BOARD_SEPOLICY_VERS := 30
-PRODUCT_SUPPORTS_VERITY := true
 
 TARGET_USE_SDCLANG := true
 TARGET_NO_BOOTLOADER := true
