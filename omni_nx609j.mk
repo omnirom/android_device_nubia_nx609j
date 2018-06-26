@@ -41,8 +41,6 @@ $(call inherit-product, vendor/omni/config/common.mk)
 # Inherit from hardware-specific part of the product configuration
 $(call inherit-product, device/nubia/nx609j/device.mk)
 
-DEVICE_PACKAGE_OVERLAYS += device/nubia/nubia/overlay/device
-
 ALLOW_MISSING_DEPENDENCIES := true
 
 PRODUCT_PACKAGES += \
