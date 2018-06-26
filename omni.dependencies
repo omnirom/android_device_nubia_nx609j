@@ -61,8 +61,8 @@
   },
   {
     "remote": "omnirom",
-    "repository": "android_kernel_oneplus_msm8998",
-    "target_path": "kernel/oneplus/msm8998",
+    "repository": "android_kernel_nubia_nx609j",
+    "target_path": "kernel/nubia/nx609j",
     "revision": "android-8.1"
   },
   {
