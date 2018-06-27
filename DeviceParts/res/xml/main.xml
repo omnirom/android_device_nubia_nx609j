@@ -31,4 +31,14 @@
             android:title="@string/vib_strength_title_head"
             android:summary="@string/vib_strength_summary_head" />
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_slider">
+        <ListPreference
+            android:key="slider_mode_top"
+            android:title="@string/slider_mode_title_top"
+            android:entries="@array/slider_key_action_entries"
+            android:entryValues="@array/slider_key_action_values"
+            android:persistent="false" />
+    </PreferenceCategory>
 </PreferenceScreen>

@@ -102,8 +102,7 @@ PRODUCT_CHARACTERISTICS := nosdcard
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
-    device/nubia/nx609j/keylayout/fpc1020.kl:system/usr/keylayout/fpc1020.kl \
-    device/nubia/nx609j/keylayout/gf_input.kl:system/usr/keylayout/gf_input.kl
+    device/nubia/nx609j/keylayout/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl
 
 # Lights
 PRODUCT_PACKAGES += \

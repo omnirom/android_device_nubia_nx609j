@@ -7,3 +7,6 @@
 
 /sys/devices/virtual/timed_output/vibrator/vtg_level            u:object_r:sysfs_vibrator:s0
 
+# lazy bum
+/sys/devices/soc/soc:gpio_keys/GamekeyStatus u:object_r:sysfs_vibrator:s0
+
