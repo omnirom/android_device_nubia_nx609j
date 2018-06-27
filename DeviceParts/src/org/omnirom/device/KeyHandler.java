@@ -71,6 +71,7 @@ public class KeyHandler implements DeviceKeyHandler {
     private static final String DOZE_INTENT = "com.android.systemui.doze.pulse";
     private static final int HANDWAVE_MAX_DELTA_MS = 1000;
     private static final int POCKET_MIN_DELTA_MS = 5000;
+    private static final String GAME_SWITCH_STATUS = "/sys/devices/soc/soc:gpio_keys/GamekeyStatus";
 
     private static final int KEY_GAME_SWITCH = 249;     /*nubia add for game switch key*/
 
@@ -217,6 +218,11 @@ public class KeyHandler implements DeviceKeyHandler {
             switch(event.getScanCode()) {
                 case KEY_GAME_SWITCH:
                     if (DEBUG) Log.i(TAG, "KEY_GAME_SWITCH");
+                    if (getGameModeSwitchStatus()) {
+                        doHandleSliderAction(true);
+                    } else {
+                        doHandleSliderAction(false);
+                    }
                     return true;
             }
         }
@@ -309,5 +315,43 @@ public class KeyHandler implements DeviceKeyHandler {
         if (doVibrate && mPolicy != null) {
             mPolicy.performHapticFeedbackLw(null, HapticFeedbackConstants.LONG_PRESS, true);
         }
+    }
+
+    private int getSliderAction() {
+        String value = Settings.System.getStringForUser(mContext.getContentResolver(),
+                    Settings.System.BUTTON_EXTRA_KEY_MAPPING,
+                    UserHandle.USER_CURRENT);
+        final String defaultValue = DeviceSettings.SLIDER_DEFAULT_VALUE;
+
+        if (value == null) {
+            value = defaultValue;
+        }
+        return Integer.valueOf(value);
+    }
+
+    private void doHandleSliderAction(boolean on) {
+        if (!on) {
+            mNoMan.setZenMode(Global.ZEN_MODE_OFF_ONLY, null, TAG);
+            mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_NORMAL);
+        } else {
+            int action = getSliderAction();
+            if (action == 0) {
+                mNoMan.setZenMode(Global.ZEN_MODE_OFF_ONLY, null, TAG);
+                mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_NORMAL);
+            } else if (action == 1) {
+                mNoMan.setZenMode(Global.ZEN_MODE_OFF_ONLY, null, TAG);
+                mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_VIBRATE);
+            } else if (action == 2) {
+                mNoMan.setZenMode(Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS, null, TAG);
+            } else if (action == 3) {
+                mNoMan.setZenMode(Global.ZEN_MODE_ALARMS, null, TAG);
+            } else if (action == 4) {
+                mNoMan.setZenMode(Global.ZEN_MODE_NO_INTERRUPTIONS, null, TAG);
+            }
+        }
+    }
+
+    private boolean getGameModeSwitchStatus() {
+        return Utils.getFileValueAsBoolean(GAME_SWITCH_STATUS, false);
     }
 }

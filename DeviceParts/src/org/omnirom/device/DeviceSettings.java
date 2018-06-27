@@ -41,8 +41,11 @@ public class DeviceSettings extends PreferenceFragment implements
         Preference.OnPreferenceChangeListener {
 
     public static final String KEY_VIBSTRENGTH = "vib_strength";
+    private static final String KEY_SLIDER_MODE_TOP = "slider_mode_top";
+    public static final String SLIDER_DEFAULT_VALUE = "0";
 
     private VibratorStrengthPreference mVibratorStrength;
+    private ListPreference mSliderModeTop;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -52,6 +55,12 @@ public class DeviceSettings extends PreferenceFragment implements
         if (mVibratorStrength != null) {
             mVibratorStrength.setEnabled(VibratorStrengthPreference.isSupported());
         }
+        mSliderModeTop = (ListPreference) findPreference(KEY_SLIDER_MODE_TOP);
+        mSliderModeTop.setOnPreferenceChangeListener(this);
+        int sliderModeTop = getSliderAction();
+        int valueIndex = mSliderModeTop.findIndexOfValue(String.valueOf(sliderModeTop));
+        mSliderModeTop.setValueIndex(valueIndex);
+        mSliderModeTop.setSummary(mSliderModeTop.getEntries()[valueIndex]);
     }
 
     @Override
@@ -61,6 +70,29 @@ public class DeviceSettings extends PreferenceFragment implements
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
+        if (preference == mSliderModeTop) {
+            String value = (String) newValue;
+            int sliderMode = Integer.valueOf(value);
+            setSliderAction(sliderMode);
+            int valueIndex = mSliderModeTop.findIndexOfValue(value);
+            mSliderModeTop.setSummary(mSliderModeTop.getEntries()[valueIndex]);
+        }
         return true;
+    }
+
+    private int getSliderAction() {
+        String value = Settings.System.getString(getContext().getContentResolver(),
+                    Settings.System.BUTTON_EXTRA_KEY_MAPPING);
+        final String defaultValue = DeviceSettings.SLIDER_DEFAULT_VALUE;
+
+        if (value == null) {
+            value = defaultValue;
+        }
+        return Integer.valueOf(value);
+    }
+
+    private void setSliderAction(int action) {
+        Settings.System.putString(getContext().getContentResolver(),
+                    Settings.System.BUTTON_EXTRA_KEY_MAPPING, String.valueOf(action));
     }
 }
