@@ -24,6 +24,8 @@
     <string name="doze_category_summary">Wake screen when you receive notifications</string>
     <string name="wave_check_summary">Pulse notifications on hand wave</string>
     <string name="wave_check_title">Hand wave</string>
+    <string name="tilt_check_summary">Pulse notifications when device is tilted</string>
+    <string name="tilt_check_title">Tilt</string>
     <string name="pocket_check_summary">Pulse notifications on removal from pocket</string>
     <string name="pocket_check_title">Pocket</string>
     <string name="ambient_display_enable">Ambient display must be enabled in display settings</string>

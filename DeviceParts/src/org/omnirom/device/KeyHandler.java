@@ -66,17 +66,24 @@ public class KeyHandler implements DeviceKeyHandler {
     private static final boolean DEBUG = true;
     private static final boolean DEBUG_SENSOR = true;
 
-    protected static final int GESTURE_REQUEST = 1;
-    private static final int GESTURE_WAKELOCK_DURATION = 2000;
-
+    private static final int BATCH_LATENCY_IN_MS = 100;
     private static final int MIN_PULSE_INTERVAL_MS = 2500;
     private static final String DOZE_INTENT = "com.android.systemui.doze.pulse";
     private static final int HANDWAVE_MAX_DELTA_MS = 1000;
     private static final int POCKET_MIN_DELTA_MS = 5000;
 
+    private static final int KEY_GAME_SWITCH = 249;     /*nubia add for game switch key*/
+
+    private static final int[] sSupportedGestures = new int[]{
+        KEY_GAME_SWITCH
+    };
+
+    private static final int[] sHandledGestures = new int[]{
+        KEY_GAME_SWITCH
+    };
+
     protected final Context mContext;
     private final PowerManager mPowerManager;
-    private WakeLock mGestureWakeLock;
     private Handler mHandler = new Handler();
     private SettingsObserver mSettingsObserver;
     private final NotificationManager mNoMan;
@@ -84,12 +91,13 @@ public class KeyHandler implements DeviceKeyHandler {
     private SensorManager mSensorManager;
     private boolean mProxyIsNear;
     private boolean mUseProxiCheck;
+    private Sensor mTiltSensor;
+    private boolean mUseTiltCheck;
     private boolean mProxyWasNear;
     private long mProxySensorTimestamp;
     private boolean mUseWaveCheck;
     private Sensor mPocketSensor;
     private boolean mUsePocketCheck;
-    private boolean mDispOn;
     private WindowManagerPolicy mPolicy;
 
     private SensorEventListener mProximitySensor = new SensorEventListener() {
@@ -111,6 +119,19 @@ public class KeyHandler implements DeviceKeyHandler {
                 }
                 mProxySensorTimestamp = SystemClock.elapsedRealtime();
                 mProxyWasNear = mProxyIsNear;
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        }
+    };
+
+    private SensorEventListener mTiltSensorListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            if (event.values[0] == 1) {
+                launchDozePulse();
             }
         }
 
@@ -161,10 +182,8 @@ public class KeyHandler implements DeviceKeyHandler {
          @Override
          public void onReceive(Context context, Intent intent) {
              if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-                 mDispOn = true;
                  onDisplayOn();
              } else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-                 mDispOn = false;
                  onDisplayOff();
              }
          }
@@ -172,16 +191,14 @@ public class KeyHandler implements DeviceKeyHandler {
 
     public KeyHandler(Context context) {
         mContext = context;
-        mDispOn = true;
         mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
-        mGestureWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-                "GestureWakeLock");
         mSettingsObserver = new SettingsObserver(mHandler);
         mSettingsObserver.observe();
         mNoMan = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         mAudioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
         mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
         mPocketSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        mTiltSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_TILT_DETECTOR);
         IntentFilter screenStateFilter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         screenStateFilter.addAction(Intent.ACTION_SCREEN_OFF);
         mContext.registerReceiver(mScreenStateReceiver, screenStateFilter);
@@ -189,12 +206,26 @@ public class KeyHandler implements DeviceKeyHandler {
 
     @Override
     public boolean handleKeyEvent(KeyEvent event) {
-        return false;
+        if (event.getAction() != KeyEvent.ACTION_UP) {
+            return false;
+        }
+        if (DEBUG) Log.i(TAG, "scanCode=" + event.getScanCode());
+
+        boolean isKeySupported = ArrayUtils.contains(sHandledGestures, event.getScanCode());
+        if (isKeySupported) {
+            if (DEBUG) Log.i(TAG, "scanCode=" + event.getScanCode());
+            switch(event.getScanCode()) {
+                case KEY_GAME_SWITCH:
+                    if (DEBUG) Log.i(TAG, "KEY_GAME_SWITCH");
+                    return true;
+            }
+        }
+        return isKeySupported;
     }
 
     @Override
     public boolean canHandleKeyEvent(KeyEvent event) {
-        return false;
+        return ArrayUtils.contains(sSupportedGestures, event.getScanCode());
     }
 
     @Override
@@ -222,6 +253,9 @@ public class KeyHandler implements DeviceKeyHandler {
         if (enableProxiSensor()) {
             mSensorManager.unregisterListener(mProximitySensor, mPocketSensor);
         }
+        if (mUseTiltCheck) {
+            mSensorManager.unregisterListener(mTiltSensorListener, mTiltSensor);
+        }
     }
 
     private void onDisplayOff() {
@@ -231,6 +265,10 @@ public class KeyHandler implements DeviceKeyHandler {
             mSensorManager.registerListener(mProximitySensor, mPocketSensor,
                     SensorManager.SENSOR_DELAY_NORMAL);
             mProxySensorTimestamp = SystemClock.elapsedRealtime();
+        }
+        if (mUseTiltCheck) {
+            mSensorManager.registerListener(mTiltSensorListener, mTiltSensor,
+                    SensorManager.SENSOR_DELAY_NORMAL, BATCH_LATENCY_IN_MS * 1000);
         }
     }
 
@@ -251,8 +289,11 @@ public class KeyHandler implements DeviceKeyHandler {
         if (DEBUG) Log.i(TAG, "Doze settings = " + value);
         if (!TextUtils.isEmpty(value)) {
             String[] parts = value.split(":");
-            mUseWaveCheck = Boolean.valueOf(parts[0]);
-            mUsePocketCheck = Boolean.valueOf(parts[1]);
+            if (parts.length == 3) {
+                mUseWaveCheck = Boolean.valueOf(parts[0]);
+                mUsePocketCheck = Boolean.valueOf(parts[1]);
+                mUseTiltCheck = Boolean.valueOf(parts[2]);
+            }
         }
     }
 
