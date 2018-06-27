@@ -29,4 +29,12 @@
     <string name="pocket_check_summary">Pulse notifications on removal from pocket</string>
     <string name="pocket_check_title">Pocket</string>
     <string name="ambient_display_enable">Ambient display must be enabled in display settings</string>
+    <string name="slider_mode_off">Off</string>
+    <string name="slider_mode_vibrate">Vibrate</string>
+    <string name="slider_mode_silent">Silent</string>
+    <string name="slider_mode_priority">Priority only</string>
+    <string name="slider_mode_alarm">Alarms only</string>
+    <string name="slider_mode_dnd">Total silence</string>
+    <string name="slider_mode_title_top">Top position</string>
+    <string name="category_slider">Slider</string>
 </resources>
