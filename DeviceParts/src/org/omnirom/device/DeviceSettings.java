@@ -42,32 +42,7 @@ public class DeviceSettings extends PreferenceFragment implements
 
     public static final String KEY_VIBSTRENGTH = "vib_strength";
 
-    private static final String KEY_SLIDER_MODE_TOP = "slider_mode_top";
-    private static final String KEY_SLIDER_MODE_CENTER = "slider_mode_center";
-    private static final String KEY_SLIDER_MODE_BOTTOM = "slider_mode_bottom";
-    private static final String KEY_SWAP_BACK_RECENTS = "swap_back_recents";
-    private static final String KEY_BUTTON_CATEGORY = "buttons_category";
-    private static final String KEY_CATEGORY_GRAPHICS = "graphics";
-
-    public static final String KEY_SRGB_SWITCH = "srgb";
-    public static final String KEY_HBM_SWITCH = "hbm";
-    public static final String KEY_PROXI_SWITCH = "proxi";
-    public static final String KEY_DCI_SWITCH = "dci";
-    public static final String KEY_NIGHT_SWITCH = "night";
-
-    public static final String KEY_OTG_SWITCH = "otg_switch";
-
-    public static final String SLIDER_DEFAULT_VALUE = "4,2,0";
-
     private VibratorStrengthPreference mVibratorStrength;
-    private ListPreference mSliderModeTop;
-    private ListPreference mSliderModeCenter;
-    private ListPreference mSliderModeBottom;
-    private TwoStatePreference mSwapBackRecents;
-    private static TwoStatePreference mHBMModeSwitch;
-    private PreferenceCategory buttonCategory;
-    private static TwoStatePreference mOtgSwitch;
-
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -77,120 +52,15 @@ public class DeviceSettings extends PreferenceFragment implements
         if (mVibratorStrength != null) {
             mVibratorStrength.setEnabled(VibratorStrengthPreference.isSupported());
         }
-
-        mSliderModeTop = (ListPreference) findPreference(KEY_SLIDER_MODE_TOP);
-        mSliderModeTop.setOnPreferenceChangeListener(this);
-        int sliderModeTop = getSliderAction(0);
-        int valueIndex = mSliderModeTop.findIndexOfValue(String.valueOf(sliderModeTop));
-        mSliderModeTop.setValueIndex(valueIndex);
-        mSliderModeTop.setSummary(mSliderModeTop.getEntries()[valueIndex]);
-
-        mSliderModeCenter = (ListPreference) findPreference(KEY_SLIDER_MODE_CENTER);
-        mSliderModeCenter.setOnPreferenceChangeListener(this);
-        int sliderModeCenter = getSliderAction(1);
-        valueIndex = mSliderModeCenter.findIndexOfValue(String.valueOf(sliderModeCenter));
-        mSliderModeCenter.setValueIndex(valueIndex);
-        mSliderModeCenter.setSummary(mSliderModeCenter.getEntries()[valueIndex]);
-
-        mSliderModeBottom = (ListPreference) findPreference(KEY_SLIDER_MODE_BOTTOM);
-        mSliderModeBottom.setOnPreferenceChangeListener(this);
-        int sliderModeBottom = getSliderAction(2);
-        valueIndex = mSliderModeBottom.findIndexOfValue(String.valueOf(sliderModeBottom));
-        mSliderModeBottom.setValueIndex(valueIndex);
-        mSliderModeBottom.setSummary(mSliderModeBottom.getEntries()[valueIndex]);
-
-        PreferenceCategory buttonCategory = (PreferenceCategory) findPreference(KEY_BUTTON_CATEGORY);
-        mSwapBackRecents = (TwoStatePreference) findPreference(KEY_SWAP_BACK_RECENTS);
-        final boolean mSwapBackRecentsEnabled = getResources().getBoolean(R.bool.config_device_has_hw_nav_buttons);
-        if (!mSwapBackRecentsEnabled) {
-            getPreferenceScreen().removePreference(buttonCategory);
-        } else {
-             mSwapBackRecents = (TwoStatePreference) findPreference(KEY_SWAP_BACK_RECENTS);
-             mSwapBackRecents.setChecked(Settings.System.getInt(getContext().getContentResolver(),
-                    Settings.System.BUTTON_SWAP_BACK_RECENTS, 0) != 0);
-        }
-
-        mHBMModeSwitch = (TwoStatePreference) findPreference(KEY_HBM_SWITCH);
-        mHBMModeSwitch.setEnabled(HBMModeSwitch.isSupported());
-        mHBMModeSwitch.setChecked(HBMModeSwitch.isCurrentlyEnabled(this.getContext()));
-        mHBMModeSwitch.setOnPreferenceChangeListener(new HBMModeSwitch());
-
-        mOtgSwitch = (TwoStatePreference) findPreference(KEY_OTG_SWITCH);
-        mOtgSwitch.setEnabled(UsbOtgSwitch.isSupported());
-        mOtgSwitch.setChecked(UsbOtgSwitch.isCurrentlyEnabled(this.getContext()));
-        mOtgSwitch.setOnPreferenceChangeListener(new UsbOtgSwitch());
-
     }
 
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
-        if (preference == mSwapBackRecents) {
-            Settings.System.putInt(getContext().getContentResolver(),
-                    Settings.System.BUTTON_SWAP_BACK_RECENTS, mSwapBackRecents.isChecked() ? 1 : 0);
-            return true;
-        }
         return super.onPreferenceTreeClick(preference);
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (preference == mSliderModeTop) {
-            String value = (String) newValue;
-            int sliderMode = Integer.valueOf(value);
-            setSliderAction(0, sliderMode);
-            int valueIndex = mSliderModeTop.findIndexOfValue(value);
-            mSliderModeTop.setSummary(mSliderModeTop.getEntries()[valueIndex]);
-        } else if (preference == mSliderModeCenter) {
-            String value = (String) newValue;
-            int sliderMode = Integer.valueOf(value);
-            setSliderAction(1, sliderMode);
-            int valueIndex = mSliderModeCenter.findIndexOfValue(value);
-            mSliderModeCenter.setSummary(mSliderModeCenter.getEntries()[valueIndex]);
-        } else if (preference == mSliderModeBottom) {
-            String value = (String) newValue;
-            int sliderMode = Integer.valueOf(value);
-            setSliderAction(2, sliderMode);
-            int valueIndex = mSliderModeBottom.findIndexOfValue(value);
-            mSliderModeBottom.setSummary(mSliderModeBottom.getEntries()[valueIndex]);
-        }
         return true;
-    }
-
-    private int getSliderAction(int position) {
-        String value = Settings.System.getString(getContext().getContentResolver(),
-                    Settings.System.BUTTON_EXTRA_KEY_MAPPING);
-        final String defaultValue = SLIDER_DEFAULT_VALUE;
-
-        if (value == null) {
-            value = defaultValue;
-        } else if (value.indexOf(",") == -1) {
-            value = defaultValue;
-        }
-        try {
-            String[] parts = value.split(",");
-            return Integer.valueOf(parts[position]);
-        } catch (Exception e) {
-        }
-        return 0;
-    }
-
-    private void setSliderAction(int position, int action) {
-        String value = Settings.System.getString(getContext().getContentResolver(),
-                    Settings.System.BUTTON_EXTRA_KEY_MAPPING);
-        final String defaultValue = SLIDER_DEFAULT_VALUE;
-
-        if (value == null) {
-            value = defaultValue;
-        } else if (value.indexOf(",") == -1) {
-            value = defaultValue;
-        }
-        try {
-            String[] parts = value.split(",");
-            parts[position] = String.valueOf(action);
-            String newValue = TextUtils.join(",", parts);
-            Settings.System.putString(getContext().getContentResolver(),
-                    Settings.System.BUTTON_EXTRA_KEY_MAPPING, newValue);
-        } catch (Exception e) {
-        }
     }
 }
