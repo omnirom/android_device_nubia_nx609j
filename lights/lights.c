@@ -3,6 +3,7 @@
  * Copyright (C) 2014 The Linux Foundation. All rights reserved.
  * Copyright (C) 2016 The CyanogenMod Project
  * Copyright (C) 2017 The LineageOS Project
+ * Copyright (C) 2018 The OmniROM Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,44 +43,19 @@ static struct light_state_t g_attention;
 static struct light_state_t g_notification;
 static struct light_state_t g_battery;
 
-#define BUTTON_BRIGHTNESS_FILE "/sys/class/leds/button-backlight/brightness"
-
 #define LCD_BRIGHTNESS_FILE "/sys/devices/soc/c900000.qcom,mdss_mdp/c900000.qcom,mdss_mdp:qcom,mdss_fb_primary/leds/lcd-backlight/brightness"
 #define LCD_MAX_BRIGHTNESS_FILE "/sys/devices/soc/c900000.qcom,mdss_mdp/c900000.qcom,mdss_mdp:qcom,mdss_fb_primary/leds/lcd-backlight/max_brightness"
 
-#define RED_LED_BRIGHTNESS_FILE "/sys/class/leds/red/brightness"
-#define GREEN_LED_BRIGHTNESS_FILE "/sys/class/leds/green/brightness"
-#define BLUE_LED_BRIGHTNESS_FILE "/sys/class/leds/blue/brightness"
+#define RED_LED_BRIGHTNESS_FILE "/sys/class/leds/nubia_led/brightness"
+#define RED_RAMP_STEP_MS_FILE "/sys/class/leds/nubia_led/ramp_step_ms"
+#define RED_DUTY_PCTS_FILE "/sys/class/leds/nubia_led/duty_pcts"
+#define RED_START_IDX_FILE "/sys/class/leds/nubia_led/start_idx"
+#define RED_PAUSE_LO_FILE "/sys/class/leds/nubia_led/pause_lo"
+#define RED_PAUSE_HI_FILE "/sys/class/leds/nubia_led/pause_hi"
+#define RED_BLINK_FILE "/sys/class/leds/nubia_led/blink"
+#define DEFAULT_LED_BRIGHTNESS 255
 
-#define RED_DUTY_PCTS_FILE "/sys/class/leds/red/duty_pcts"
-#define GREEN_DUTY_PCTS_FILE "/sys/class/leds/green/duty_pcts"
-#define BLUE_DUTY_PCTS_FILE "/sys/class/leds/blue/duty_pcts"
-
-#define RED_START_IDX_FILE "/sys/class/leds/red/start_idx"
-#define GREEN_START_IDX_FILE "/sys/class/leds/green/start_idx"
-#define BLUE_START_IDX_FILE "/sys/class/leds/blue/start_idx"
-
-#define RED_PAUSE_LO_FILE "/sys/class/leds/red/pause_lo"
-#define GREEN_PAUSE_LO_FILE "/sys/class/leds/green/pause_lo"
-#define BLUE_PAUSE_LO_FILE "/sys/class/leds/blue/pause_lo"
-
-#define RED_PAUSE_HI_FILE "/sys/class/leds/red/pause_hi"
-#define GREEN_PAUSE_HI_FILE "/sys/class/leds/green/pause_hi"
-#define BLUE_PAUSE_HI_FILE "/sys/class/leds/blue/pause_hi"
-
-#define RED_RAMP_STEP_MS_FILE "/sys/class/leds/red/ramp_step_ms"
-#define GREEN_RAMP_STEP_MS_FILE "/sys/class/leds/green/ramp_step_ms"
-#define BLUE_RAMP_STEP_MS_FILE "/sys/class/leds/blue/ramp_step_ms"
-
-#define RED_BLINK_FILE "/sys/class/leds/red/blink"
-#define GREEN_BLINK_FILE "/sys/class/leds/green/blink"
-#define BLUE_BLINK_FILE "/sys/class/leds/blue/blink"
-
-#define RGB_BLINK_FILE "/sys/class/leds/rgb/rgb_blink"
-
-#define RAMP_SIZE 8
-static int BRIGHTNESS_RAMP[RAMP_SIZE] = { 0, 12, 25, 37, 50, 72, 85, 100 };
-#define RAMP_STEP_DURATION 50
+#define RAMP_STEP_DURATION 200
 
 #define DEFAULT_MAX_BRIGHTNESS 255
 int max_brightness;
@@ -207,51 +183,23 @@ static int set_light_backlight(struct light_device_t* dev,
 static int set_light_buttons(struct light_device_t *dev,
         const struct light_state_t *state)
 {
-    int err = 0;
-    int brightness = rgb_to_brightness(state);
-
-    if (!dev)
-        return -1;
-
-    pthread_mutex_lock(&g_lock);
-    err = write_int(BUTTON_BRIGHTNESS_FILE, brightness);
-    pthread_mutex_unlock(&g_lock);
-    return err;
-}
-
-static char* get_scaled_duty_pcts(int brightness)
-{
-    char *buf = malloc(5 * RAMP_SIZE * sizeof(char));
-    char *pad = "";
-    int i = 0;
-
-    memset(buf, 0, 5 * RAMP_SIZE * sizeof(char));
-
-    for (i = 0; i < RAMP_SIZE; i++) {
-        char temp[5] = "";
-        snprintf(temp, sizeof(temp), "%s%d", pad, (BRIGHTNESS_RAMP[i] * brightness / 255));
-        strcat(buf, temp);
-        pad = ",";
-    }
-    ALOGV("%s: brightness=%d, duty=%s\n", __func__, brightness, buf);
-    return buf;
+    return 0;
 }
 
 static int set_speaker_light_locked(struct light_device_t* dev,
         struct light_state_t const* state)
 {
     int red, green, blue, blink;
-    int onMS, offMS, stepDuration, pauseHi;
+    int onMS, offMS;
     unsigned int colorRGB;
-    char *duty;
 
     if (!dev)
         return -1;
 
     switch (state->flashMode) {
     case LIGHT_FLASH_TIMED:
-        onMS = state->flashOnMS;
-        offMS = state->flashOffMS;
+        onMS = 1;
+        offMS = 1;
         break;
     case LIGHT_FLASH_NONE:
     default:
@@ -262,7 +210,7 @@ static int set_speaker_light_locked(struct light_device_t* dev,
 
     colorRGB = state->color;
 
-    ALOGV("%s: mode %d, colorRGB=%08X, onMS=%d, offMS=%d\n",
+    ALOGD("%s: mode %d, colorRGB=%08X, onMS=%d, offMS=%d\n",
             __func__, state->flashMode, colorRGB, onMS, offMS);
 
     red = (colorRGB >> 16) & 0xFF;
@@ -270,63 +218,17 @@ static int set_speaker_light_locked(struct light_device_t* dev,
     blue = colorRGB & 0xFF;
     blink = onMS > 0 && offMS > 0;
 
-    // Disable all blinking to start
-    write_int(RGB_BLINK_FILE, 0);
-
     if (blink) {
-        stepDuration = RAMP_STEP_DURATION;
-        pauseHi = onMS - (stepDuration * RAMP_SIZE * 2);
-        if (stepDuration * RAMP_SIZE * 2 > onMS) {
-            stepDuration = onMS / (RAMP_SIZE * 2);
-            pauseHi = 0;
-        }
-
-        // Red
-        write_int(RED_START_IDX_FILE, 0);
-        duty = get_scaled_duty_pcts(red);
-        write_str(RED_DUTY_PCTS_FILE, duty);
-        write_int(RED_PAUSE_LO_FILE, offMS);
-        // The led driver is configured to ramp up then ramp
-        // down the lut. This effectively doubles the ramp duration.
-        write_int(RED_PAUSE_HI_FILE, pauseHi);
-        write_int(RED_RAMP_STEP_MS_FILE, stepDuration);
-        free(duty);
-
-        // Green
-        write_int(GREEN_START_IDX_FILE, RAMP_SIZE);
-        duty = get_scaled_duty_pcts(green);
-        write_str(GREEN_DUTY_PCTS_FILE, duty);
-        write_int(GREEN_PAUSE_LO_FILE, offMS);
-        // The led driver is configured to ramp up then ramp
-        // down the lut. This effectively doubles the ramp duration.
-        write_int(GREEN_PAUSE_HI_FILE, pauseHi);
-        write_int(GREEN_RAMP_STEP_MS_FILE, stepDuration);
-        free(duty);
-
-        // Blue
-        write_int(BLUE_START_IDX_FILE, RAMP_SIZE * 2);
-        duty = get_scaled_duty_pcts(blue);
-        write_str(BLUE_DUTY_PCTS_FILE, duty);
-        write_int(BLUE_PAUSE_LO_FILE, offMS);
-        // The led driver is configured to ramp up then ramp
-        // down the lut. This effectively doubles the ramp duration.
-        write_int(BLUE_PAUSE_HI_FILE, pauseHi);
-        write_int(BLUE_RAMP_STEP_MS_FILE, stepDuration);
-        free(duty);
-
-        // Start the party
-        write_int(RGB_BLINK_FILE, 1);
+        write_int(RED_RAMP_STEP_MS_FILE, RAMP_STEP_DURATION);
+        write_int(RED_LED_BRIGHTNESS_FILE, DEFAULT_LED_BRIGHTNESS);
     } else {
         if (red == 0 && green == 0 && blue == 0) {
-            write_int(RED_BLINK_FILE, 0);
-            write_int(GREEN_BLINK_FILE, 0);
-            write_int(BLUE_BLINK_FILE, 0);
+            write_int(RED_LED_BRIGHTNESS_FILE, 0);
+        } else {
+            write_int(RED_LED_BRIGHTNESS_FILE, DEFAULT_LED_BRIGHTNESS);
+            write_int(RED_RAMP_STEP_MS_FILE, 0);
         }
-        write_int(RED_LED_BRIGHTNESS_FILE, red);
-        write_int(GREEN_LED_BRIGHTNESS_FILE, green);
-        write_int(BLUE_LED_BRIGHTNESS_FILE, blue);
     }
-
 
     return 0;
 }
@@ -355,35 +257,7 @@ static int set_light_notifications(struct light_device_t* dev,
         struct light_state_t const* state)
 {
     pthread_mutex_lock(&g_lock);
-
-    unsigned int brightness;
-    unsigned int color;
-    unsigned int rgb[3];
-
     g_notification = *state;
-
-    // If a brightness has been applied by the user
-    brightness = (g_notification.color & 0xFF000000) >> 24;
-    if (brightness > 0 && brightness < 0xFF) {
-
-        // Retrieve each of the RGB colors
-        color = g_notification.color & 0x00FFFFFF;
-        rgb[0] = (color >> 16) & 0xFF;
-        rgb[1] = (color >> 8) & 0xFF;
-        rgb[2] = color & 0xFF;
-
-        // Apply the brightness level
-        if (rgb[0] > 0)
-            rgb[0] = (rgb[0] * brightness) / 0xFF;
-        if (rgb[1] > 0)
-            rgb[1] = (rgb[1] * brightness) / 0xFF;
-        if (rgb[2] > 0)
-            rgb[2] = (rgb[2] * brightness) / 0xFF;
-
-        // Update with the new color
-        g_notification.color = (rgb[0] << 16) + (rgb[1] << 8) + rgb[2];
-    }
-
     handle_speaker_light_locked(dev);
     pthread_mutex_unlock(&g_lock);
     return 0;
@@ -469,7 +343,7 @@ struct hw_module_t HAL_MODULE_INFO_SYM = {
     .version_major = 1,
     .version_minor = 0,
     .id = LIGHTS_HARDWARE_MODULE_ID,
-    .name = "MSM8996 Lights Module",
-    .author = "The CyanogenMod Project",
+    .name = "NX609J Lights Module",
+    .author = "The OmniROM Project",
     .methods = &lights_module_methods,
 };
