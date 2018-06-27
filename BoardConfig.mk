@@ -73,6 +73,7 @@ TARGET_KERNEL_SOURCE := kernel/nubia/nx609j
 TARGET_KERNEL_CONFIG := omni_nx609j_defconfig
 TARGET_KERNEL_APPEND_DTB := true
 BOARD_ROOT_EXTRA_FOLDERS := bt_firmware firmware dsp persist embedlog
+BOARD_CUSTOM_BOOTIMG_MK := $(BOARD_PATH)/mkbootimg.mk
 
 # partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
