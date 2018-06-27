@@ -41,10 +41,8 @@ public class DozeSettings extends PreferenceFragment  {
 
     private static final String KEY_WAVE_CHECK = "wave_check";
     private static final String KEY_POCKET_CHECK = "pocket_check";
-    private static final String KEY_TILT_CHECK = "tilt_check";
     private static final String KEY_FOOTER = "footer";
 
-    private boolean mUseTiltCheck;
     private boolean mUseWaveCheck;
     private boolean mUsePocketCheck;
 
@@ -74,16 +72,6 @@ public class DozeSettings extends PreferenceFragment  {
                 return true;
             }
         });
-        TwoStatePreference tiltSwitch = (TwoStatePreference) findPreference(KEY_TILT_CHECK);
-        tiltSwitch.setChecked(mUseTiltCheck);
-        tiltSwitch.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                mUseTiltCheck = (Boolean) newValue;
-                setDozeSettings();
-                return true;
-            }
-        });
         Preference footer = findPreference(KEY_FOOTER);
         if (isAmbientDisplayEnabled()) {
             getPreferenceScreen().removePreference(footer);
@@ -97,12 +85,11 @@ public class DozeSettings extends PreferenceFragment  {
             String[] parts = value.split(":");
             mUseWaveCheck = Boolean.valueOf(parts[0]);
             mUsePocketCheck = Boolean.valueOf(parts[1]);
-            mUseTiltCheck = Boolean.valueOf(parts[2]);
         }
     }
 
     private void setDozeSettings() {
-        String newValue = String.valueOf(mUseWaveCheck) + ":" + String.valueOf(mUsePocketCheck) + ":" + String.valueOf(mUseTiltCheck);
+        String newValue = String.valueOf(mUseWaveCheck) + ":" + String.valueOf(mUsePocketCheck);
         Settings.System.putString(getContext().getContentResolver(), Settings.System.DEVICE_FEATURE_SETTINGS, newValue);
     }
 

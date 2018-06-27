@@ -24,11 +24,6 @@
         android:summary="@string/pocket_check_summary"
         android:title="@string/pocket_check_title"
         android:persistent="false" />
-    <SwitchPreference
-        android:key="tilt_check"
-        android:summary="@string/tilt_check_summary"
-        android:title="@string/tilt_check_title"
-        android:persistent="false" />
     <Preference
         android:key="footer"
         android:summary="@string/ambient_display_enable"

@@ -29,6 +29,7 @@
 
 import init.nubia.touch.lcd.rc
 import init.multicolor.led.rc
+import init.omni.rc
 
 on boot
     # Nubia begin feature add sensors node
