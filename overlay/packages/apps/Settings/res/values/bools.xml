@@ -14,4 +14,6 @@
 <resources>
     <!-- Whether to add AGPS parameter settings -->
     <bool name="config_agps_enabled">true</bool>
+
+    <bool name="config_notificationLedTiming">false</bool>
 </resources>
