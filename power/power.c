@@ -37,8 +37,7 @@
 #include <dlfcn.h>
 #include <stdlib.h>
 
-#define LOG_TAG "Omni PowerHAL"
-#define DOUBLE_TAP_FILE "/proc/touchpanel/double_tap_enable"
+#define LOG_TAG "QTI PowerHAL"
 
 #include <utils/Log.h>
 #include <hardware/hardware.h>
@@ -457,8 +456,6 @@ void set_interactive(struct power_module *module, int on)
 
 void set_feature(struct power_module __unused *module, feature_t feature, int state) {
     if (feature == POWER_FEATURE_DOUBLE_TAP_TO_WAKE) {
-        ALOGI("%s POWER_FEATURE_DOUBLE_TAP_TO_WAKE %s", __func__, (state ? "ON" : "OFF"));
-        sysfs_write(DOUBLE_TAP_FILE, state ? "1" : "0");
     }
 }
 
