@@ -41,4 +41,6 @@
     <string name="slider_mode_dnd">Total silence</string>
     <string name="slider_mode_title_top">Top position</string>
     <string name="category_slider">Slider</string>
+    <string name="category_led">Back LED strip</string>
+    <string name="led_effect_title">Effect</string>
 </resources>
