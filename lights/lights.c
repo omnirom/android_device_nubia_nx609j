@@ -55,10 +55,17 @@ static struct light_state_t g_battery;
 #define RED_BLINK_FILE "/sys/class/leds/nubia_led/blink"
 #define DEFAULT_LED_BRIGHTNESS 255
 
-#define RAMP_STEP_DURATION 200
+#define RAMP_STEP_DURATION 100
 
 #define DEFAULT_MAX_BRIGHTNESS 255
 int max_brightness;
+
+#define BACK_LED_EFFECT_FILE "/sys/class/leds/aw22xxx_led/effect"
+#define BACK_LED_EFFECT_OFF 0
+#define BACK_LED_EFFECT_GREEN_GLOW 2
+#define BACK_LED_EFFECT_BLUE_STRIP_FAST 6
+#define BACK_LED_EFFECT_GREEN_STRIPE_FAST 9
+#define BACK_LED_EFFECT_RAINBOW_FAST 12
 
 /**
  * Device methods
@@ -246,9 +253,24 @@ static void handle_speaker_light_locked(struct light_device_t* dev)
 static int set_light_battery(struct light_device_t* dev,
         struct light_state_t const* state)
 {
+    int red, green, blue, blink;
+    int onMS, offMS;
+    unsigned int colorRGB;
+
     pthread_mutex_lock(&g_lock);
     g_battery = *state;
     handle_speaker_light_locked(dev);
+
+    colorRGB = state->color;
+    red = (colorRGB >> 16) & 0xFF;
+    green = (colorRGB >> 8) & 0xFF;
+    blue = colorRGB & 0xFF;
+
+    if (red == 0 && green == 0 && blue == 0) {
+        write_int(BACK_LED_EFFECT_FILE, BACK_LED_EFFECT_OFF);
+    } else {
+        write_int(BACK_LED_EFFECT_FILE, BACK_LED_EFFECT_GREEN_STRIPE_FAST);
+    }
     pthread_mutex_unlock(&g_lock);
     return 0;
 }
@@ -256,9 +278,25 @@ static int set_light_battery(struct light_device_t* dev,
 static int set_light_notifications(struct light_device_t* dev,
         struct light_state_t const* state)
 {
+    int red, green, blue, blink;
+    int onMS, offMS;
+    unsigned int colorRGB;
+
     pthread_mutex_lock(&g_lock);
     g_notification = *state;
     handle_speaker_light_locked(dev);
+
+    colorRGB = state->color;
+    red = (colorRGB >> 16) & 0xFF;
+    green = (colorRGB >> 8) & 0xFF;
+    blue = colorRGB & 0xFF;
+
+    if (red == 0 && green == 0 && blue == 0) {
+        write_int(BACK_LED_EFFECT_FILE, BACK_LED_EFFECT_OFF);
+    } else {
+        write_int(BACK_LED_EFFECT_FILE, BACK_LED_EFFECT_BLUE_STRIP_FAST);
+    }
+
     pthread_mutex_unlock(&g_lock);
     return 0;
 }
