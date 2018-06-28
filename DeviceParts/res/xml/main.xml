@@ -52,4 +52,14 @@
             android:entryValues="@array/slider_key_action_values"
             android:persistent="false" />
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_led">
+        <ListPreference
+            android:key="led_effect"
+            android:title="@string/led_effect_title"
+            android:entries="@array/led_effect_entries"
+            android:entryValues="@array/led_effect_values"
+            android:persistent="false" />
+    </PreferenceCategory>
 </PreferenceScreen>
