@@ -213,3 +213,7 @@ on property:persist.sys.ap.restart_level=*
 on property:persist.sys.nubia_pwrkey_dump=*
     write /sys/nubia_pwrkey_dump/dump_enable ${persist.sys.nubia_pwrkey_dump}
 
+service charger /charger
+    class charger
+    group system graphics
+    seclabel u:r:healthd:s0
