@@ -60,6 +60,10 @@ static struct light_state_t g_battery;
 #define DEFAULT_MAX_BRIGHTNESS 255
 int max_brightness;
 
+#define BACK_LED_EFFECT_FILE "/sys/class/leds/aw22xxx_led/effect"
+#define BACK_LED_EFFECT_OFF 0
+#define BACK_LED_EFFECT_GREEN_GLOW 2
+
 /**
  * Device methods
  */
@@ -246,9 +250,24 @@ static void handle_speaker_light_locked(struct light_device_t* dev)
 static int set_light_battery(struct light_device_t* dev,
         struct light_state_t const* state)
 {
+    int red, green, blue, blink;
+    int onMS, offMS;
+    unsigned int colorRGB;
+
     pthread_mutex_lock(&g_lock);
     g_battery = *state;
     handle_speaker_light_locked(dev);
+
+    colorRGB = state->color;
+    red = (colorRGB >> 16) & 0xFF;
+    green = (colorRGB >> 8) & 0xFF;
+    blue = colorRGB & 0xFF;
+
+    if (red == 0 && green == 0 && blue == 0) {
+        write_int(BACK_LED_EFFECT_FILE, BACK_LED_EFFECT_OFF);
+    } else {
+        write_int(BACK_LED_EFFECT_FILE, BACK_LED_EFFECT_GREEN_GLOW);
+    }
     pthread_mutex_unlock(&g_lock);
     return 0;
 }
