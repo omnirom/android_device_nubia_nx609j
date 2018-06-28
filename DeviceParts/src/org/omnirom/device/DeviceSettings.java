@@ -44,12 +44,15 @@ public class DeviceSettings extends PreferenceFragment implements
     public static final String KEY_DOUBLE_TAP_TO_WAKE_SWITCH = "double_tap_to_wake";
     private static final String KEY_PROXI_SWITCH = "proxi";
     private static final String KEY_SLIDER_MODE_TOP = "slider_mode_top";
+    private static final String KEY_LED_EFFECT = "led_effect";
     public static final String SLIDER_DEFAULT_VALUE = "0";
+    private static final String LED_EFFECT_FILE = "/sys/class/leds/aw22xxx_led/effect";
 
     private VibratorStrengthPreference mVibratorStrength;
     private TwoStatePreference mDoubleTapToWake;
     private TwoStatePreference mProxiSwitch;
     private ListPreference mSliderModeTop;
+    private ListPreference mLedEffect;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -74,6 +77,16 @@ public class DeviceSettings extends PreferenceFragment implements
         int valueIndex = mSliderModeTop.findIndexOfValue(String.valueOf(sliderModeTop));
         mSliderModeTop.setValueIndex(valueIndex);
         mSliderModeTop.setSummary(mSliderModeTop.getEntries()[valueIndex]);
+
+        mLedEffect = (ListPreference) findPreference(KEY_LED_EFFECT);
+        mLedEffect.setOnPreferenceChangeListener(this);
+        // effect = 0x0b
+        String currentEffect = Utils.getFileValue(LED_EFFECT_FILE, "effect = 0x00");
+        String effect = currentEffect.split(" = ")[1];
+        int ledEffect = Integer.decode(effect);
+        valueIndex = mLedEffect.findIndexOfValue(String.valueOf(ledEffect));
+        mLedEffect.setValueIndex(valueIndex);
+        mLedEffect.setSummary(mLedEffect.getEntries()[valueIndex]);
     }
 
     @Override
@@ -94,6 +107,11 @@ public class DeviceSettings extends PreferenceFragment implements
             setSliderAction(sliderMode);
             int valueIndex = mSliderModeTop.findIndexOfValue(value);
             mSliderModeTop.setSummary(mSliderModeTop.getEntries()[valueIndex]);
+        } else if (preference == mLedEffect) {
+            String value = (String) newValue;
+            Utils.writeValue(LED_EFFECT_FILE, value);
+            int valueIndex = mLedEffect.findIndexOfValue(value);
+            mLedEffect.setSummary(mLedEffect.getEntries()[valueIndex]);
         }
         return true;
     }
