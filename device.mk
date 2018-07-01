@@ -20,7 +20,7 @@
 # product configuration (apps).
 #
 $(call inherit-product-if-exists, vendor/nubia/nx609j/device-vendor.mk)
-$(call inherit-product-if-exists, vendor/gapps/arm64/arm64-vendor.mk)
+#$(call inherit-product-if-exists, vendor/gapps/arm64/arm64-vendor.mk)
 $(call inherit-product, vendor/omni/config/phone-xxhdpi-4096-dalvik-heap.mk)
 $(call inherit-product, vendor/omni/config/phone-xxhdpi-2048-hwui-memory.mk)
 
@@ -153,7 +153,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     ims-ext-common
 
-#PRODUCT_PACKAGES += \
+PRODUCT_PACKAGES += \
     com.android.ims.rcsmanager \
     com.android.ims.rcsmanager.xml \
     RcsService \
@@ -165,13 +165,15 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_BOOT_JARS += \
     tcmiface \
-    android.hardware.light-V2.0-java \
     WfdCommon
 
 # Netutils
 PRODUCT_PACKAGES += \
     netutils-wrapper-1.0 \
     libandroid_net
+
+PRODUCT_PACKAGES += \
+    libtinyalsa
 
 PRODUCT_PACKAGES += \
     DeviceParts
