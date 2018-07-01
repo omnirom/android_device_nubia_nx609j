@@ -6,6 +6,9 @@ on init
     mount none /dev/null /vendor/etc/init/hw/init.qcom.usb.rc bind
 
 on boot
+    # Load WLAN driver, to satisfy wificond
+    setprop wifi.interface wlan0
+    insmod /system/lib/modules/wlan.ko
     # default country code
     setprop ro.boot.wificountrycode 00
 
