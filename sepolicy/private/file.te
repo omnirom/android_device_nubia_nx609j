@@ -1,6 +1,1 @@
-#type adsprpcd_file, file_type;
-#type embedlog, file_type;
-
 type debugfs_wifi, fs_type, debugfs_type;
-
-type sysfs_graphics_omni, sysfs_type, fs_type;
