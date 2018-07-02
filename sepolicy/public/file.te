@@ -4,3 +4,5 @@ type proc_fingerprint, fs_type;
 type sysfs_fpc_proximity, sysfs_type, fs_type;
 
 type perfd_socket, file_type;
+
+type proc_timerslack, fs_type;

@@ -10,3 +10,4 @@
 # lazy bum
 /sys/devices/soc/soc:gpio_keys/GamekeyStatus u:object_r:sysfs_vibrator:s0
 
+/proc/.*/timerslack_ns                       u:object_r:proc_timerslack:s0
