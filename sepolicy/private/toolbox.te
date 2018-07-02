@@ -1,1 +1,0 @@
-allow toolbox sysfs_graphics_omni:file { getattr open read setattr };

@@ -76,7 +76,7 @@ ENABLE_CPUSETS := true
 ENABLE_SCHEDBOOST := true
 
 BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 sched_enable_hmp=1 sched_enable_power_aware=1 service_locator.enable=1 swiotlb=2048 androidboot.configfs=true androidboot.usbcontroller=a800000.dwc3
-BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE += androidboot.selinux=enforcing
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
@@ -184,7 +184,6 @@ BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
 # selinux
 include device/qcom/sepolicy/sepolicy.mk
 include vendor/omni/sepolicy/sepolicy.mk
-BOARD_SEPOLICY_DIRS += $(BOARD_PATH)/sepolicy
 BOARD_PLAT_PUBLIC_SEPOLICY_DIR += $(BOARD_PATH)/sepolicy/public
 BOARD_PLAT_PRIVATE_SEPOLICY_DIR += $(BOARD_PATH)/sepolicy/private
 
