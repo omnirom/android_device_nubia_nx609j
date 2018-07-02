@@ -18,16 +18,19 @@
 # device-specific aspects (drivers) with a device-agnostic
 # product configuration (apps).
 #
-include build/make/target/board/generic_arm64_a/BoardConfig.mk
-include build/make/target/product/verity.mk
-
 BOARD_PATH := device/nubia/nx609j
+
+PRODUCT_SUPPORTS_BOOT_SIGNER := true
+PRODUCT_SUPPORTS_VERITY := true
+PRODUCT_VERITY_SIGNING_KEY := build/target/product/security/verity
+BOARD_AVB_BOOT_KEY_PATH := build/target/product/security/verity
+PRODUCT_DEFAULT_DEV_CERTIFICATE := build/target/product/security/verity
 
 PRODUCT_FULL_TREBLE := true
 BOARD_VNDK_VERSION := current
 PRODUCT_SHIPPING_API_LEVEL := 27
 TARGET_NO_KERNEL := false
-BOARD_BUILD_DISABLED_VBMETAIMAGE := false
+TARGET_NO_RECOVERY := false
 BOARD_SEPOLICY_VERS := 30
 
 TARGET_USE_SDCLANG := true
@@ -36,7 +39,6 @@ TARGET_OTA_ASSERT_DEVICE := nx609j,NX609J
 TARGET_KERNEL_VERSION := 4.9
 TARGET_KERNEL_CLANG_COMPILE := false
 TARGET_BOOTLOADER_BOARD_NAME := msm8998
-#TARGET_PLATFORM_DEVICE_BASE := /devices/soc.0/
 
 # Platform
 TARGET_BOARD_PLATFORM := msm8998
