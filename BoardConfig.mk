@@ -184,6 +184,9 @@ BOARD_USES_QCNE := true
 TARGET_SYSTEM_PROP := $(BOARD_PATH)/system.prop
 BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
 
+# audio effects
+TARGET_SYSTEM_AUDIO_EFFECTS := true
+
 # selinux
 include device/qcom/sepolicy/sepolicy.mk
 include vendor/omni/sepolicy/sepolicy.mk
