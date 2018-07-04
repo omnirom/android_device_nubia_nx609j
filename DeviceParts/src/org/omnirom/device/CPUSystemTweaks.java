@@ -17,21 +17,14 @@
 */
 package org.omnirom.device;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.v7.preference.PreferenceManager;
-import android.provider.Settings;
-import android.text.TextUtils;
 
-public class Startup extends BroadcastReceiver {
+public class CPUSystemTweaks {
+    private static final String CPU0_SCALING_MIN_FREQ = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq";
+    private static final String CPU4_SCALING_MIN_FREQ = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq";
 
-    @Override
-    public void onReceive(final Context context, final Intent bootintent) {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-
-        VibratorStrengthPreference.restore(context);
-        CPUSystemTweaks.restore(context);
+    public static void restore(Context context) {
+        Utils.writeValue(CPU0_SCALING_MIN_FREQ, "300000");
+        Utils.writeValue(CPU4_SCALING_MIN_FREQ, "300000");
     }
 }
