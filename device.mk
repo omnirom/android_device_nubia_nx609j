@@ -160,11 +160,9 @@ PRODUCT_PACKAGES += \
     PresencePolling
 
 PRODUCT_PACKAGES += \
-    tcmiface \
     WfdCommon
 
 PRODUCT_BOOT_JARS += \
-    tcmiface \
     WfdCommon
 
 # Netutils
