@@ -20,3 +20,9 @@ on post-fs
 
     # game mode switch
     chown system system /sys/devices/soc/soc:gpio_keys/GamekeyStatus
+
+    # cpufreq stuff
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
