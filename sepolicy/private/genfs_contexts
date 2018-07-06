@@ -1,0 +1,2 @@
+genfscon sysfs /sys/devices/soc/c179000.i2c/i2c-5/5-004b/input/input1/wake_gesture u:object_r:sysfs_touchscreen:s0
+genfscon sysfs /sys/devices/soc/soc:gpio_keys/GamekeyStatus u:object_r:sysfs_switch:s0
