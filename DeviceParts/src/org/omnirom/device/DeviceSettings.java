@@ -41,15 +41,28 @@ public class DeviceSettings extends PreferenceFragment implements
         Preference.OnPreferenceChangeListener {
 
     public static final String KEY_VIBSTRENGTH = "vib_strength";
+    public static finale String KEY_DOUBLE_TAP_TO_WAKE_SWITCH = "double_tap_to_wake";
+    private static final String KEY_PROXI_SWITCH = "proxi";
     private static final String KEY_SLIDER_MODE_TOP = "slider_mode_top";
     public static final String SLIDER_DEFAULT_VALUE = "0";
 
     private VibratorStrengthPreference mVibratorStrength;
+    private TwoStatePreference mDoubleTapToWake;
+    private TwoStatePreference mProxiSwitch;
     private ListPreference mSliderModeTop;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.main, rootKey);
+
+        mDoubleTapToWake = (TwoStatePreference) findPreference(KEY_DOUBLE_TAP_TO_WAKE_SWITCH);
+        mDoubleTapToWake.setEnabled(DoubleTapToWake.isSupported());
+        mDoubleTapToWake.setChecked(DoubleTapToWake.isCurrentlyEnabled(this.getContext()));
+        mDoubleTapToWake.setOnPreferenceChangeListener(new DoubleTapToWake());
+
+        mProxiSwitch = (TwoStatePreference) findPreference(KEY_PROXI_SWITCH);
+        mProxiSwitch.setChecked(Settings.System.getInt(getContext().getContentResolver(),
+                Settings.System.DEVICE_PROXI_CHECK_ENABLED, 1) != 0);
 
         mVibratorStrength = (VibratorStrengthPreference) findPreference(KEY_VIBSTRENGTH);
         if (mVibratorStrength != null) {
@@ -65,6 +78,11 @@ public class DeviceSettings extends PreferenceFragment implements
 
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
+        if (preference == mProxiSwitch) {
+            Settings.System.putInt(getContext().getContentResolver(),
+                    Settings.System.DEVICE_PROXI_CHECK_ENABLED, mProxiSwitch.isChecked() ? 1 : 0);
+            return true;
+        }
         return super.onPreferenceTreeClick(preference);
     }
 
