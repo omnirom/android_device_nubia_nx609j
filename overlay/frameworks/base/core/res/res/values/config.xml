@@ -84,6 +84,16 @@
         <item>255</item>
     </integer-array>
 
+    <!-- Whether or not to skip the initial brightness ramps when the display transitions to
+         STATE_ON. Setting this to true will skip the brightness ramp to the last stored active
+         brightness value and will repeat for the following ramp if autobrightness is enabled. -->
+    <bool name="config_skipScreenOnBrightnessRamp">true</bool>
+
+    <!-- Initial light sensor event rate in milliseconds for automatic brightness control. This is
+         used for obtaining the first light sample when the device stops dozing.
+
+         Set this to -1 to disable this feature. -->
+    <integer name="config_autoBrightnessInitialLightSensorRate">100</integer>
     <!-- Stability requirements in milliseconds for accepting a new brightness level.  This is used
          for debouncing the light sensor.  Different constants are used to debounce the light sensor
          when adapting to brighter or darker environments.  This parameter controls how quickly
