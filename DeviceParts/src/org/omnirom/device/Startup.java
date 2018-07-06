@@ -27,11 +27,23 @@ import android.text.TextUtils;
 
 public class Startup extends BroadcastReceiver {
 
+    private void restore(String file, boolean enabled) {
+        if (file == null) {
+            return;
+        }
+        if (enabled) {
+            Utils.writeValue(file, "1");
+        }
+    }
+
     @Override
     public void onReceive(final Context context, final Intent bootintent) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 
         VibratorStrengthPreference.restore(context);
         CPUSystemTweaks.restore(context);
+
+        boolean enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_DOUBLE_TAP_TO_WAKE_SWITCH, false);
+        restore(DoubleTapToWake.getFile(), enabled);
     }
 }

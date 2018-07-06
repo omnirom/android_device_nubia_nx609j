@@ -63,8 +63,8 @@ import com.android.internal.statusbar.IStatusBarService;
 public class KeyHandler implements DeviceKeyHandler {
 
     private static final String TAG = "KeyHandler";
-    private static final boolean DEBUG = true;
-    private static final boolean DEBUG_SENSOR = true;
+    private static final boolean DEBUG = false;
+    private static final boolean DEBUG_SENSOR = false;
 
     private static final int BATCH_LATENCY_IN_MS = 100;
     private static final int MIN_PULSE_INTERVAL_MS = 2500;
@@ -74,13 +74,19 @@ public class KeyHandler implements DeviceKeyHandler {
     private static final String GAME_SWITCH_STATUS = "/sys/devices/soc/soc:gpio_keys/GamekeyStatus";
 
     private static final int KEY_GAME_SWITCH = 249;     /*nubia add for game switch key*/
+    private static final int KEY_DOUBLE_TAP = 68; // KEY_F10
 
     private static final int[] sSupportedGestures = new int[]{
-        KEY_GAME_SWITCH
+        KEY_GAME_SWITCH,
+        KEY_DOUBLE_TAP
     };
 
     private static final int[] sHandledGestures = new int[]{
         KEY_GAME_SWITCH
+    };
+
+    private static final int[] sProxiCheckedGestures = new int[]{
+        KEY_DOUBLE_TAP
     };
 
     protected final Context mContext;
@@ -236,6 +242,12 @@ public class KeyHandler implements DeviceKeyHandler {
 
     @Override
     public boolean isDisabledKeyEvent(KeyEvent event) {
+        boolean isProxyCheckRequired = mUseProxiCheck &&
+                ArrayUtils.contains(sProxiCheckedGestures, event.getScanCode());
+        if (mProxyIsNear && isProxyCheckRequired) {
+            if (DEBUG) Log.i(TAG, "isDisabledKeyEvent: blocked by proxi sensor - scanCode=" + event.getScanCode());
+            return true;
+        }
         return false;
     }
 
@@ -246,7 +258,10 @@ public class KeyHandler implements DeviceKeyHandler {
 
     @Override
     public boolean isWakeEvent(KeyEvent event){
-        return false;
+        if (event.getAction() != KeyEvent.ACTION_UP) {
+            return false;
+        }
+        return event.getScanCode() == KEY_DOUBLE_TAP;
     }
 
     @Override
