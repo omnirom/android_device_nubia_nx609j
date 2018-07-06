@@ -15,6 +15,10 @@
 -->
 <resources>
     <string name="app_name">Nubia nx609j</string>
+    <string name="double_tap_to_wake_title">Tap to wake</string>
+    <string name="double_tap_to_wake_summary">Double-tap anywhere on the screen to wake device</string>
+    <string name="proxi_summary_head">Check proximity sensor on tap to wake</string>
+    <string name="proxi_title_head">Proximity check</string>
     <string name="category_vibrator">Vibrator</string>
     <string name="vib_strength_title_head">Strength</string>
     <string name="vib_strength_summary_head">Define the strength of the vibrator</string>
