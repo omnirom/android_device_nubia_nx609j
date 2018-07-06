@@ -14,6 +14,20 @@
      limitations under the License.
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:key="double_tap_to_wake"
+        android:summary="@string/double_tap_to_wake_summary"
+        android:title="@string/double_tap_to_wake_title"
+        android:persistent="false"
+        android:defaultValue="false" />
+
+    <SwitchPreference
+        android:key="proxi"
+        android:summary="@string/proxi_summary_head"
+        android:title="@string/proxi_title_head"
+        android:persistent="false"
+        android:defaultValue="true" />
+
     <Preference
         android:key="doze_category"
         android:title="@string/doze_category_title"
