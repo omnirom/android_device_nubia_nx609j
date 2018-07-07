@@ -63,10 +63,11 @@ import com.android.internal.statusbar.IStatusBarService;
 public class KeyHandler implements DeviceKeyHandler {
 
     private static final String TAG = "KeyHandler";
-    private static final boolean DEBUG = false;
-    private static final boolean DEBUG_SENSOR = false;
+    private static final boolean DEBUG = true;
+    private static final boolean DEBUG_SENSOR = true;
 
     private static final int BATCH_LATENCY_IN_MS = 100;
+    private static final int GESTURE_WAKELOCK_DURATION = 2000;
     private static final int MIN_PULSE_INTERVAL_MS = 2500;
     private static final String DOZE_INTENT = "com.android.systemui.doze.pulse";
     private static final int HANDWAVE_MAX_DELTA_MS = 1000;
@@ -74,11 +75,17 @@ public class KeyHandler implements DeviceKeyHandler {
     private static final String GAME_SWITCH_STATUS = "/sys/devices/soc/soc:gpio_keys/GamekeyStatus";
 
     private static final int KEY_GAME_SWITCH = 249;     /*nubia add for game switch key*/
-    private static final int KEY_DOUBLE_TAP = 68; // KEY_F10
+    private static final int KEY_DOUBLE_TAP = 143;
+    private static final int GESTURE_SWIPE_SCANCODE = 251;
+    private static final int GESTURE_CIRCLE_SCANCODE = 250;
+    private static final int GESTURE_ARROW_SCANCODE = 252;
 
     private static final int[] sSupportedGestures = new int[]{
         KEY_GAME_SWITCH,
-        KEY_DOUBLE_TAP
+        KEY_DOUBLE_TAP,
+        GESTURE_SWIPE_SCANCODE,
+        GESTURE_CIRCLE_SCANCODE,
+        GESTURE_ARROW_SCANCODE
     };
 
     private static final int[] sHandledGestures = new int[]{
@@ -86,11 +93,15 @@ public class KeyHandler implements DeviceKeyHandler {
     };
 
     private static final int[] sProxiCheckedGestures = new int[]{
-        KEY_DOUBLE_TAP
+        KEY_DOUBLE_TAP,
+        GESTURE_SWIPE_SCANCODE,
+        GESTURE_CIRCLE_SCANCODE,
+        GESTURE_ARROW_SCANCODE
     };
 
     protected final Context mContext;
     private final PowerManager mPowerManager;
+    private WakeLock mGestureWakeLock;
     private Handler mHandler = new Handler();
     private SettingsObserver mSettingsObserver;
     private final NotificationManager mNoMan;
@@ -106,6 +117,7 @@ public class KeyHandler implements DeviceKeyHandler {
     private Sensor mPocketSensor;
     private boolean mUsePocketCheck;
     private WindowManagerPolicy mPolicy;
+    private boolean mDoubleTapEnabled;
 
     private SensorEventListener mProximitySensor = new SensorEventListener() {
         @Override
@@ -159,6 +171,9 @@ public class KeyHandler implements DeviceKeyHandler {
             mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
                     Settings.System.DEVICE_FEATURE_SETTINGS),
                     false, this);
+            mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
+                    GestureSettings.DEVICE_GESTURE_MAPPING_3),
+                    false, this);
             update();
             updateDozeSettings();
         }
@@ -182,6 +197,9 @@ public class KeyHandler implements DeviceKeyHandler {
             mUseProxiCheck = Settings.System.getIntForUser(
                     mContext.getContentResolver(), Settings.System.DEVICE_PROXI_CHECK_ENABLED, 1,
                     UserHandle.USER_CURRENT) == 1;
+            mDoubleTapEnabled = Settings.System.getIntForUser(
+                    mContext.getContentResolver(), GestureSettings.DEVICE_GESTURE_MAPPING_3, 0,
+                    UserHandle.USER_CURRENT) != 0;
         }
     }
 
@@ -199,6 +217,8 @@ public class KeyHandler implements DeviceKeyHandler {
     public KeyHandler(Context context) {
         mContext = context;
         mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+        mGestureWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                "GestureWakeLock");
         mSettingsObserver = new SettingsObserver(mHandler);
         mSettingsObserver.observe();
         mNoMan = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -237,11 +257,14 @@ public class KeyHandler implements DeviceKeyHandler {
 
     @Override
     public boolean canHandleKeyEvent(KeyEvent event) {
-        return ArrayUtils.contains(sSupportedGestures, event.getScanCode());
+       if (DEBUG) Log.i(TAG, "canHandleKeyEvent scanCode=" + event.getScanCode());
+       return ArrayUtils.contains(sSupportedGestures, event.getScanCode());
     }
 
     @Override
     public boolean isDisabledKeyEvent(KeyEvent event) {
+        if (DEBUG) Log.i(TAG, "isDisabledKeyEvent scanCode=" + event.getScanCode());
+
         boolean isProxyCheckRequired = mUseProxiCheck &&
                 ArrayUtils.contains(sProxiCheckedGestures, event.getScanCode());
         if (mProxyIsNear && isProxyCheckRequired) {
@@ -253,7 +276,12 @@ public class KeyHandler implements DeviceKeyHandler {
 
     @Override
     public boolean isCameraLaunchEvent(KeyEvent event) {
-        return false;
+        if (event.getAction() != KeyEvent.ACTION_UP) {
+            return false;
+        }
+        if (DEBUG) Log.i(TAG, "isCameraLaunchEvent scanCode=" + event.getScanCode());
+        String value = getGestureValueForScanCode(event.getScanCode());
+        return !TextUtils.isEmpty(value) && value.equals(AppSelectListPreference.CAMERA_ENTRY);
     }
 
     @Override
@@ -261,11 +289,29 @@ public class KeyHandler implements DeviceKeyHandler {
         if (event.getAction() != KeyEvent.ACTION_UP) {
             return false;
         }
-        return event.getScanCode() == KEY_DOUBLE_TAP;
+        if (DEBUG) Log.i(TAG, "isWakeEvent scanCode=" + event.getScanCode());
+        String value = getGestureValueForScanCode(event.getScanCode());
+        if (!TextUtils.isEmpty(value) && value.equals(AppSelectListPreference.WAKE_ENTRY)) {
+            if (DEBUG) Log.i(TAG, "isWakeEvent " + event.getScanCode() + value);
+            return true;
+        }
+        return event.getScanCode() == KEY_DOUBLE_TAP && mDoubleTapEnabled;
     }
 
     @Override
     public Intent isActivityLaunchEvent(KeyEvent event) {
+        if (event.getAction() != KeyEvent.ACTION_UP) {
+            return null;
+        }
+        String value = getGestureValueForScanCode(event.getScanCode());
+        if (!TextUtils.isEmpty(value) && !value.equals(AppSelectListPreference.DISABLED_ENTRY)) {
+            if (DEBUG) Log.i(TAG, "isActivityLaunchEvent " + event.getScanCode() + value);
+            if (!launchSpecialActions(value)) {
+                vibe();
+                Intent intent = createIntent(value);
+                return intent;
+            }
+        }
         return null;
     }
 
@@ -368,5 +414,51 @@ public class KeyHandler implements DeviceKeyHandler {
 
     private boolean getGameModeSwitchStatus() {
         return Utils.getFileValueAsBoolean(GAME_SWITCH_STATUS, false);
+    }
+
+    private Intent createIntent(String value) {
+        ComponentName componentName = ComponentName.unflattenFromString(value);
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        intent.setComponent(componentName);
+        return intent;
+    }
+
+    private boolean launchSpecialActions(String value) {
+        if (value.equals(AppSelectListPreference.TORCH_ENTRY)) {
+            mGestureWakeLock.acquire(GESTURE_WAKELOCK_DURATION);
+            IStatusBarService service = getStatusBarService();
+            if (service != null) {
+                try {
+                    vibe();
+                    service.toggleCameraFlash();
+                } catch (RemoteException e) {
+                    // do nothing.
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private String getGestureValueForScanCode(int scanCode) {
+        switch(scanCode) {
+            case GESTURE_CIRCLE_SCANCODE:
+                return Settings.System.getStringForUser(mContext.getContentResolver(),
+                    GestureSettings.DEVICE_GESTURE_MAPPING_0, UserHandle.USER_CURRENT);
+            case GESTURE_ARROW_SCANCODE:
+                return Settings.System.getStringForUser(mContext.getContentResolver(),
+                    GestureSettings.DEVICE_GESTURE_MAPPING_1, UserHandle.USER_CURRENT);
+            case GESTURE_SWIPE_SCANCODE:
+                return Settings.System.getStringForUser(mContext.getContentResolver(),
+                    GestureSettings.DEVICE_GESTURE_MAPPING_2, UserHandle.USER_CURRENT);
+        }
+        return null;
+    }
+
+    IStatusBarService getStatusBarService() {
+        return IStatusBarService.Stub.asInterface(ServiceManager.getService("statusbar"));
     }
 }
