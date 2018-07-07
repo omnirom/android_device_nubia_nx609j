@@ -14,4 +14,32 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources></resources>
+<resources>
+  <string name="double_tap_to_wake_title">Un toc per despertar</string>
+  <string name="double_tap_to_wake_summary">Doble toc a qualsevol lloc de la pantalla per despertar el dispositiu</string>
+  <string name="proxi_title_head">Comprovació de proximitat</string>
+  <string name="category_vibrator">Vibració</string>
+  <string name="vib_strength_title_head">Intensitat</string>
+  <string name="vib_strength_summary_head">Definició de la intensitat de la vibració</string>
+  <string name="vib_test">Prova</string>
+  <string name="advanced_settings">Avançat</string>
+  <string name="doze_category_title">Pantalla activa</string>
+  <string name="doze_category_summary">Activa la pantalla en rebre avisos</string>
+  <string name="wave_check_summary">Avisos intermitents amb el moviment de la mà</string>
+  <string name="wave_check_title">Moviment de la mà</string>
+  <string name="tilt_check_summary">Avisos intermitents en donar la volta al dispositiu</string>
+  <string name="tilt_check_title">Inclinació</string>
+  <string name="pocket_check_summary">Avisos intermitents en treure de la butxaca</string>
+  <string name="pocket_check_title">Butxaca</string>
+  <string name="ambient_display_enable">S\'ha d\'habilitar la pantalla activa a la configuració de pantalla</string>
+  <string name="slider_mode_off">Desactivat</string>
+  <string name="slider_mode_vibrate">Vibració</string>
+  <string name="slider_mode_silent">Silenci</string>
+  <string name="slider_mode_priority">Només prioritat</string>
+  <string name="slider_mode_alarm">Només alarmes</string>
+  <string name="slider_mode_dnd">Silenci total</string>
+  <string name="slider_mode_title_top">Posició superior</string>
+  <string name="category_slider">Control lliscant</string>
+  <string name="category_led">Tira LED posterior</string>
+  <string name="led_effect_title">Efecte</string>
+</resources>

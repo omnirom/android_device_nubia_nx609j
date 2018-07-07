@@ -15,6 +15,7 @@
         android:targetSdkVersion="26" />
     <application
         android:label="@string/advanced_settings"
+        android:icon="@drawable/ic_launcher"
         android:theme="@style/AppTheme"
         android:supportsRtl="true" >
         <activity
@@ -38,6 +39,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity-alias>
+        <activity
+            android:name="org.omnirom.device.GestureSettingsActivity"
+            android:exported="false"
+            android:label="@string/category_gestures_title"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name="org.omnirom.device.DozeSettingsActivity"
             android:exported="false"

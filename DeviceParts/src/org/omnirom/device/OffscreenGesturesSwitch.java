@@ -23,7 +23,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.Preference.OnPreferenceChangeListener;
 import android.support.v7.preference.PreferenceManager;
 
-public class DoubleTapToWake implements OnPreferenceChangeListener {
+public class OffscreenGesturesSwitch implements OnPreferenceChangeListener {
 
     private static final String FILE = "/sys/devices/soc/c179000.i2c/i2c-5/5-004b/input/input1/wake_gesture";
 
