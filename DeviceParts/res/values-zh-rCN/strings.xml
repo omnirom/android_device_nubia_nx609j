@@ -15,14 +15,18 @@
      limitations under the License.
 -->
 <resources>
+  <string name="enable_gestures_title">启用</string>
   <string name="double_tap_to_wake_title">点击唤醒</string>
   <string name="double_tap_to_wake_summary">双击屏幕上的任意位置以唤醒设备</string>
   <string name="proxi_summary_head">处理手势和指纹传感器前检查近距离感器</string>
   <string name="proxi_title_head">接近检查</string>
+  <string name="off_screen_gesture_feedback_summary_head">为手势启用触摸反馈</string>
+  <string name="off_screen_gesture_feedback_title_head">触摸反馈</string>
   <string name="category_gestures_title">设备手势</string>
   <string name="choose_app">选择应用</string>
   <string name="offscreen_gesture_title">熄屏手势</string>
   <string name="category_circle_gesture">O 手势</string>
+  <string name="category_arrow_gesture">箭头手势</string>
   <string name="category_gestures_summary">配置手势操作</string>
   <string name="torch_entry">手电筒</string>
   <string name="disabled_entry">禁用</string>
@@ -33,6 +37,7 @@
   <string name="wake_entry">唤醒</string>
   <string name="not_ready_summary">处理中...</string>
   <string name="resolve_failed_summary">处理应用程序失败</string>
+  <string name="category_swipe_gesture">滑动手势</string>
   <string name="category_vibrator">振动</string>
   <string name="vib_strength_title_head">强度</string>
   <string name="vib_strength_summary_head">设置振动强度</string>

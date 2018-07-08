@@ -15,9 +15,29 @@
      limitations under the License.
 -->
 <resources>
+  <string name="enable_gestures_title">Habilita</string>
   <string name="double_tap_to_wake_title">Un toc per despertar</string>
   <string name="double_tap_to_wake_summary">Doble toc a qualsevol lloc de la pantalla per despertar el dispositiu</string>
+  <string name="proxi_summary_head">Comprova el sensor de proximitat per a la gestió del gest</string>
   <string name="proxi_title_head">Comprovació de proximitat</string>
+  <string name="off_screen_gesture_feedback_summary_head">Habilita la resposta hàptica per als gests</string>
+  <string name="off_screen_gesture_feedback_title_head">Resposta Hàptica</string>
+  <string name="category_gestures_title">Gests del dispositiu</string>
+  <string name="choose_app">Trieu l\'app</string>
+  <string name="offscreen_gesture_title">Gests amb la pantalla apagada</string>
+  <string name="category_circle_gesture">Gest de cercle</string>
+  <string name="category_arrow_gesture">Gest de fletxa</string>
+  <string name="category_gestures_summary">Configuració de les accions de gest</string>
+  <string name="torch_entry">Llanterna</string>
+  <string name="disabled_entry">Inhabilitat</string>
+  <string name="camera_entry">Càmera</string>
+  <string name="music_play_entry">Reprodueix / atura la música</string>
+  <string name="music_prev_entry">Pista prèvia</string>
+  <string name="music_next_entry">Pista següent</string>
+  <string name="wake_entry">Desperta</string>
+  <string name="not_ready_summary">S\'està resolent...</string>
+  <string name="resolve_failed_summary">L\'app de resolució ha fallat</string>
+  <string name="category_swipe_gesture">Gest de lliscar</string>
   <string name="category_vibrator">Vibració</string>
   <string name="vib_strength_title_head">Intensitat</string>
   <string name="vib_strength_summary_head">Definició de la intensitat de la vibració</string>

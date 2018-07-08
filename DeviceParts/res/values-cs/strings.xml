@@ -15,14 +15,18 @@
      limitations under the License.
 -->
 <resources>
+  <string name="enable_gestures_title">Povolit</string>
   <string name="double_tap_to_wake_title">Klepnutím probudit</string>
   <string name="double_tap_to_wake_summary">Dvojí poklepání kdekoliv na obrazovku probudí zařízení</string>
   <string name="proxi_summary_head">Zkontrolujte senzor přiblížení pro zachycení gesta a senzor otisků prstů</string>
   <string name="proxi_title_head">Kontrola senzoru přiblížení</string>
+  <string name="off_screen_gesture_feedback_summary_head">Povolit hmatovou odezvu pro gesta</string>
+  <string name="off_screen_gesture_feedback_title_head">Hmatová odezva</string>
   <string name="category_gestures_title">Gesta zařízení</string>
   <string name="choose_app">Vybrat aplikaci</string>
   <string name="offscreen_gesture_title">Gesta při vypnuté obrazovce</string>
   <string name="category_circle_gesture">Gesto O</string>
+  <string name="category_arrow_gesture">Gesto šipka</string>
   <string name="category_gestures_summary">Konfigurace akcí gest</string>
   <string name="torch_entry">Svítilna</string>
   <string name="disabled_entry">Zakázáno</string>
@@ -33,6 +37,7 @@
   <string name="wake_entry">Probuzení</string>
   <string name="not_ready_summary">Řešení...</string>
   <string name="resolve_failed_summary">Řešení aplikace selhalo</string>
+  <string name="category_swipe_gesture">Gesto přejetím</string>
   <string name="category_vibrator">Vibrace</string>
   <string name="vib_strength_title_head">Intenzita</string>
   <string name="vib_strength_summary_head">Definujte intenzitu vibrací</string>
