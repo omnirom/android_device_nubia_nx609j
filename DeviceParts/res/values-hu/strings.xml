@@ -15,14 +15,18 @@
      limitations under the License.
 -->
 <resources>
+  <string name="enable_gestures_title">Engedélyezés</string>
   <string name="double_tap_to_wake_title">Felébresztés érintéssel</string>
   <string name="double_tap_to_wake_summary">Kattintson bárhol a képernyőre duplán a készülék felébresztéséhez</string>
   <string name="proxi_summary_head">Ellenőrizze a közelség érzékelőt a gesztus és az ujjlenyomat érzékelő kezeléséhez</string>
   <string name="proxi_title_head">Közelség ellenőrzés</string>
+  <string name="off_screen_gesture_feedback_summary_head">Gesztusok érintési visszajelzésének engedélyezése</string>
+  <string name="off_screen_gesture_feedback_title_head">Érintési visszajelzés</string>
   <string name="category_gestures_title">Eszköz gesztusok</string>
   <string name="choose_app">Válasszon alkalmazást</string>
   <string name="offscreen_gesture_title">Kikapcsolt képernyős gesztusok</string>
   <string name="category_circle_gesture">O gesztus</string>
+  <string name="category_arrow_gesture">Nyíl gesztus</string>
   <string name="category_gestures_summary">Gesztus műveletek konfigurálása</string>
   <string name="torch_entry">Zseblámpa</string>
   <string name="disabled_entry">Kikapcsolva</string>
@@ -33,6 +37,7 @@
   <string name="wake_entry">Ébresztés</string>
   <string name="not_ready_summary">Elemzés...</string>
   <string name="resolve_failed_summary">Alkalmazás elemzése sikertelen</string>
+  <string name="category_swipe_gesture">Csúsztatási gesztus</string>
   <string name="category_vibrator">Rezgés</string>
   <string name="vib_strength_title_head">Erősség</string>
   <string name="vib_strength_summary_head">Rezgés erősségének meghatározása</string>

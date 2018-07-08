@@ -15,12 +15,18 @@
      limitations under the License.
 -->
 <resources>
+  <string name="enable_gestures_title">Ativar</string>
+  <string name="double_tap_to_wake_title">Toque duplo para acordar</string>
+  <string name="double_tap_to_wake_summary">Dê um toque duplo no ecrã para acordar o dispositivo</string>
   <string name="proxi_summary_head">Verifique o sensor de proximidade para a manipulação de gesto e sensor de impressão digital</string>
   <string name="proxi_title_head">Verificação de proximidade</string>
+  <string name="off_screen_gesture_feedback_summary_head">Ativar vibração quando um gesto for detetado</string>
+  <string name="off_screen_gesture_feedback_title_head">Vibrar ao tocar</string>
   <string name="category_gestures_title">Gestos de dispositivo</string>
   <string name="choose_app">Escolher aplicação</string>
   <string name="offscreen_gesture_title">Gestos com ecrã desligado</string>
   <string name="category_circle_gesture">O gesto</string>
+  <string name="category_arrow_gesture">Gesto de seta</string>
   <string name="category_gestures_summary">Configurar ações de gesto</string>
   <string name="torch_entry">Lanterna</string>
   <string name="disabled_entry">Desligado</string>
@@ -31,6 +37,7 @@
   <string name="wake_entry">Acordar</string>
   <string name="not_ready_summary">A resolver...</string>
   <string name="resolve_failed_summary">Resolver aplicação falhou</string>
+  <string name="category_swipe_gesture">Gesto de deslizar</string>
   <string name="category_vibrator">Vibração</string>
   <string name="vib_strength_title_head">Intensidade</string>
   <string name="vib_strength_summary_head">Definir a intensidade da vibração</string>
@@ -53,4 +60,6 @@
   <string name="slider_mode_dnd">Silêncio total</string>
   <string name="slider_mode_title_top">Posição superior</string>
   <string name="category_slider">Menu deslizante</string>
+  <string name="category_led">Faixa traseira de LED</string>
+  <string name="led_effect_title">Efeito</string>
 </resources>
