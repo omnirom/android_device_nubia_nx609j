@@ -35,11 +35,13 @@ $(call inherit-product, build/make/target/product/treble_common_64.mk)
 
 TARGET_BOOTANIMATION_SIZE := 1080p
 
+# must be before omni for proper overlay layering
+$(call inherit-product, device/nubia/nx609j/device.mk)
+
 # Inherit from our custom product configuration
 $(call inherit-product, vendor/omni/config/common.mk)
 
-# Inherit from hardware-specific part of the product configuration
-$(call inherit-product, device/nubia/nx609j/device.mk)
+DEVICE_PACKAGE_OVERLAYS += vendor/omni/overlay/CarrierConfig
 
 ALLOW_MISSING_DEPENDENCIES := true
 
