@@ -200,8 +200,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     verity_key
 
-PRODUCT_PACKAGE_OVERLAYS += vendor/omni/overlay/CarrierConfig
-
 # Temporary handling
 #
 # Include config.fs get only if legacy device/qcom/<target>/android_filesystem_config.h
