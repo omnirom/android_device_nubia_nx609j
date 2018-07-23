@@ -15,8 +15,13 @@
      limitations under the License.
 -->
 <resources>
+  <string name="enable_gestures_title">Abilita</string>
+  <string name="double_tap_to_wake_title">Tocca per risvegliare</string>
+  <string name="double_tap_to_wake_summary">Tocca ovunque sullo schermo per riattivare il dispositivo</string>
   <string name="proxi_summary_head">Controlla il sensore di prossimità per eventuali gesture e il sensore di impronte digitali</string>
   <string name="proxi_title_head">Controllo di prossimità</string>
+  <string name="off_screen_gesture_feedback_summary_head">Attiva la vibrazione al tocco per i gesti</string>
+  <string name="off_screen_gesture_feedback_title_head">Vibrazione al tocco</string>
   <string name="category_gestures_title">Gesture del dispositivo</string>
   <string name="choose_app">Scegli app</string>
   <string name="offscreen_gesture_title">Gesture a schermo spento</string>

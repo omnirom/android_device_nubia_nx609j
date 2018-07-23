@@ -47,7 +47,7 @@
   <string name="doze_category_summary">Activa la pantalla en rebre avisos</string>
   <string name="wave_check_summary">Avisos intermitents amb el moviment de la mà</string>
   <string name="wave_check_title">Moviment de la mà</string>
-  <string name="tilt_check_summary">Avisos intermitents en donar la volta al dispositiu</string>
+  <string name="tilt_check_summary">Avisos intermitents en inclinar el dispositiu</string>
   <string name="tilt_check_title">Inclinació</string>
   <string name="pocket_check_summary">Avisos intermitents en treure de la butxaca</string>
   <string name="pocket_check_title">Butxaca</string>

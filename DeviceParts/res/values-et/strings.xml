@@ -15,12 +15,18 @@
      limitations under the License.
 -->
 <resources>
+  <string name="enable_gestures_title">Luba</string>
+  <string name="double_tap_to_wake_title">Koputa äratamiseks</string>
+  <string name="double_tap_to_wake_summary">Topeltkoputa ekraanil mistahes kohas seadme äratamiseks</string>
   <string name="proxi_summary_head">Kontrolli lähedussensorit, haldamaks žeste ja sõrmejäljelugejat</string>
   <string name="proxi_title_head">Läheduskontroll</string>
+  <string name="off_screen_gesture_feedback_summary_head">Luba žestidele haptiline tagasiside</string>
+  <string name="off_screen_gesture_feedback_title_head">Haptine tagasiside</string>
   <string name="category_gestures_title">Seadme žestid</string>
   <string name="choose_app">Vali rakendus</string>
   <string name="offscreen_gesture_title">Väljas ekraani žestid</string>
   <string name="category_circle_gesture">O žest</string>
+  <string name="category_arrow_gesture">Nooležest</string>
   <string name="category_gestures_summary">Seadista žestitegevusi</string>
   <string name="torch_entry">Taskulamp</string>
   <string name="disabled_entry">Keelatud</string>
@@ -31,6 +37,7 @@
   <string name="wake_entry">Ärkamine</string>
   <string name="not_ready_summary">Lahendan...</string>
   <string name="resolve_failed_summary">Rakenduse lahendamine ebaõnnestus</string>
+  <string name="category_swipe_gesture">Viipežest</string>
   <string name="category_vibrator">Vibraator</string>
   <string name="vib_strength_title_head">Tugevus</string>
   <string name="vib_strength_summary_head">Määra vibraatori tugevus</string>
@@ -53,4 +60,6 @@
   <string name="slider_mode_dnd">Täielik vaikus</string>
   <string name="slider_mode_title_top">Ülapositsioon</string>
   <string name="category_slider">Liugur</string>
+  <string name="category_led">Tagumine LED-riba</string>
+  <string name="led_effect_title">Efekt</string>
 </resources>

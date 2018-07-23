@@ -43,7 +43,7 @@
   <string name="vib_strength_summary_head">Definir a intensidade da vibração</string>
   <string name="vib_test">Testar</string>
   <string name="advanced_settings">Preferências Avançadas</string>
-  <string name="doze_category_title">Ambient Display</string>
+  <string name="doze_category_title">Visualização ambiente</string>
   <string name="doze_category_summary">Acordar o ecrã quando receber notificações</string>
   <string name="wave_check_summary">Mostrar notificações ao passar a mão</string>
   <string name="wave_check_title">Passar a mão</string>
@@ -51,7 +51,7 @@
   <string name="tilt_check_title">Levantamento</string>
   <string name="pocket_check_summary">Mostrar notificações ao retirar do bolso</string>
   <string name="pocket_check_title">Bolso</string>
-  <string name="ambient_display_enable">Ambient display deve ser habilitada nas configurações de exibição</string>
+  <string name="ambient_display_enable">A visualização ambiente deve ser ativada nas definições do ecrã</string>
   <string name="slider_mode_off">Desligado</string>
   <string name="slider_mode_vibrate">Vibração</string>
   <string name="slider_mode_silent">Silêncio</string>
