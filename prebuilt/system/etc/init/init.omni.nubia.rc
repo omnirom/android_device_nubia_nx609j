@@ -3,6 +3,7 @@ on init
     mount none /system/etc/audio_policy_configuration_omni.xml /vendor/etc/audio_policy_configuration.xml bind
     mount none /system/etc/audio_effects_omni.conf /vendor/etc/audio_effects.conf bind
     mount none /dev/null /vendor/overlay/SysuiDarkTheme/SysuiDarkThemeOverlay.apk bind
+    mount none /system/etc/mixer_paths_tasha_omni.xml /vendor/etc/mixer_paths_tasha.xml bind
 
 on boot
     # Load WLAN driver, to satisfy wificond
