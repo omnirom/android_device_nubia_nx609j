@@ -1,1 +1,1 @@
-allow vold vendor_file:file {open getattr read};
+#allow vold vendor_file:file {open getattr read};
