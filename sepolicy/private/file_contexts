@@ -5,5 +5,5 @@
 /sys/kernel/debug/wlan0/power_stats u:object_r:debugfs_wifi:s0
 
 /sys/devices/virtual/timed_output/vibrator/vtg_level            u:object_r:sysfs_vibrator:s0
-/sys/devices/soc/c179000.i2c/i2c-5/5-004b/input/input1(/.*)? u:object_r:sysfs_touchscreen:s0
+/sys/devices/soc/c179000.i2c/i2c-5/5-004b/input/input1(/.*)? u:object_r:sysfs_graphics_omni:s0
 /sys/devices/soc/soc:gpio_keys/GamekeyStatus u:object_r:sysfs_switch:s0
