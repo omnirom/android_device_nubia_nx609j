@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ad1d27c_198c1471",
+        "filename": "BoardConfig.mk",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1001070
+      },
+      "writtenOn": "2018-10-03T07:41:34Z",
+      "side": 1,
+      "message": "comment out both",
+      "revId": "5a1d9881eb60269b1203c89a2cb4132b56f25836",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b6ba5d2_7d8631e3",
+        "filename": "BoardConfig.mk",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1001070
+      },
+      "writtenOn": "2018-10-03T07:41:34Z",
+      "side": 1,
+      "message": "dont need",
+      "revId": "5a1d9881eb60269b1203c89a2cb4132b56f25836",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
