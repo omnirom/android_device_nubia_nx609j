@@ -5,6 +5,7 @@ on init
     mount none /dev/null /vendor/overlay/SysuiDarkTheme/SysuiDarkThemeOverlay.apk bind
 
 on boot
+    start ril-daemon
     # Load WLAN driver, to satisfy wificond
     setprop wifi.interface wlan0
     insmod /system/lib/modules/wlan.ko
