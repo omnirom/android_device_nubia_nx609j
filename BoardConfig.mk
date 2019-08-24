@@ -196,9 +196,8 @@ TARGET_SYSTEM_AUDIO_EFFECTS := true
 
 # selinux
 include device/qcom/sepolicy/sepolicy.mk
+BOARD_SEPOLICY_DIRS += $(BOARD_PATH)/sepolicy
 include vendor/omni/sepolicy/sepolicy.mk
-BOARD_PLAT_PUBLIC_SEPOLICY_DIR += $(BOARD_PATH)/sepolicy/public
-BOARD_PLAT_PRIVATE_SEPOLICY_DIR += $(BOARD_PATH)/sepolicy/private
 
 BOARD_SECCOMP_POLICY += $(BOARD_PATH)/seccomp_policy
 

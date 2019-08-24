@@ -1,0 +1,15 @@
+# Allow init to mount vendor configs
+allow init vendor_configs_file:file mounton;
+allow init vendor_overlay_file:file mounton;
+
+#allow init sysfs:dir add_name;
+allow init sysfs:file setattr;
+allow init debugfs:dir mounton;
+allow init sysfs_dm:file r_file_perms;
+allow init sysfs_switch:file { r_file_perms setattr };
+allow init system_file:system module_load;
+allow init system_file:file mounton;
+allow init vendor_file:file mounton;
+allow init system_file:file mounton;
+allow init unlabeled:file mounton;
+allow init vendor_file:file mounton;

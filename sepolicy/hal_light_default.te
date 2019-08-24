@@ -1,0 +1,3 @@
+allow hal_light_default sysfs_multicolor_led:dir { r_dir_perms search };
+allow hal_light_default sysfs_multicolor_led:file rw_file_perms;
+allow hal_light_default sysfs_nubia_breathlight:file rw_file_perms;

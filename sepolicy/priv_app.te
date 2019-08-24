@@ -8,4 +8,4 @@ allow priv_app unlabeled:file getattr;
 allow priv_app unlabeled:lnk_file getattr;
 
 allow priv_app proc_interrupts:file open;
-allow priv_app zygote:file r_file_perms;
+#allow priv_app zygote:file r_file_perms;
