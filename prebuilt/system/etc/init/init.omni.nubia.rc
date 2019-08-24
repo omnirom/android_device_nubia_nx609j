@@ -3,6 +3,13 @@ on init
     mount none /system/etc/audio_policy_configuration_omni.xml /vendor/etc/audio_policy_configuration.xml bind
     mount none /system/etc/audio_effects_omni.conf /vendor/etc/audio_effects.conf bind
     mount none /dev/null /vendor/overlay/SysuiDarkTheme/SysuiDarkThemeOverlay.apk bind
+    # Camera
+    mount none /system/lib/libbinder.so /system/lib/vndk-28/libbinder.so bind
+    mount none /system/lib/libcutils.so /system/lib/vndk-sp-28/libcutils.so bind
+    # FP
+    mount none /system/lib64/libbinder.so /system/lib64/vndk-28/libbinder.so bind
+    # Lights
+    mount none /system/lib64/hw/lights.nx609j.so /vendor/lib64/hw/lights.msm8998.so bind
 
 on boot
     start ril-daemon
@@ -12,6 +19,9 @@ on boot
     insmod /system/lib/modules/wlan.ko
     # default country code
     setprop ro.boot.wificountrycode 00
+    chmod 0666 /mnt/vendor/persist/bluetooth/.bt_nv.bin
+    chmod 0666 /mnt/vendor/persist/wlan_mac.bin
+    chown wifi wifi /mnt/vendor/persist/wlan_mac.bin
 
 on post-fs
     # Vibrator
