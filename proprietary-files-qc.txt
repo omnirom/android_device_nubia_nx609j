@@ -1,4 +1,4 @@
--app/WfdService/WfdService.apk
+-priv-app/WfdService/WfdService.apk
 -framework/WfdCommon.jar
 -framework/qcrilhook.jar
 -framework/qti-telephony-common.jar|2eba987ae297a892e895ec1e9a302b41dbe0232e
@@ -12,6 +12,5 @@
 -framework/QtiTelephonyServicelibrary.jar
 -app/embms/embms.apk
 -priv-app/CNEService/CNEService.apk
--app/imssettings/imssettings.apk
--app/ims/ims.apk
+-priv-app/ims/ims.apk
 -framework/com.qti.dpmframework.jar
