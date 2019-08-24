@@ -43,8 +43,6 @@ DEVICE_PACKAGE_OVERLAYS += vendor/omni/overlay/CarrierConfig
 # Inherit from our custom product configuration
 $(call inherit-product, vendor/omni/config/common.mk)
 
-ALLOW_MISSING_DEPENDENCIES := true
-
 PRODUCT_PACKAGES += \
     android.hardware.biometrics.fingerprint@2.1-service
 
@@ -58,7 +56,7 @@ PRODUCT_MODEL := Nubia Red Magic
 PRODUCT_BUILD_PROP_OVERRIDES += TARGET_DEVICE=nx609j PRODUCT_NAME=NUBIA_NX609J
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    BUILD_FINGERPRINT=nubia/NX609J/NX609J:8.1.0/OPM1.171019.011/eng.nubia.20180614.113014:user/release-keys \
-    PRIVATE_BUILD_DESC="NX609J-user 8.1.0 OPM1.171019.011 eng.nubia.20180614.113014 release-keys"
+    BUILD_FINGERPRINT=nubia/NX609J/NX609J:9/PKQ1.181021.001/eng.nubia.20190521.182255:user/release-keys \
+    PRIVATE_BUILD_DESC="NX609J-user 9 PKQ1.181021.001 eng.nubia.20190521.182255 release-keys"
 
 TARGET_VENDOR := nubia
