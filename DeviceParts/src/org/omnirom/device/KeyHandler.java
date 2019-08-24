@@ -53,12 +53,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.HapticFeedbackConstants;
 import android.view.WindowManagerGlobal;
-import android.view.WindowManagerPolicy;
 
-import com.android.internal.os.DeviceKeyHandler;
+import com.android.internal.util.omni.DeviceKeyHandler;
 import com.android.internal.util.ArrayUtils;
 import com.android.internal.util.omni.OmniUtils;
 import com.android.internal.statusbar.IStatusBarService;
+
+import org.omnirom.omnilib.utils.OmniVibe;
 
 public class KeyHandler implements DeviceKeyHandler {
 
@@ -116,7 +117,6 @@ public class KeyHandler implements DeviceKeyHandler {
     private boolean mUseWaveCheck;
     private Sensor mPocketSensor;
     private boolean mUsePocketCheck;
-    private WindowManagerPolicy mPolicy;
     private boolean mDoubleTapEnabled;
 
     private SensorEventListener mProximitySensor = new SensorEventListener() {
@@ -166,10 +166,10 @@ public class KeyHandler implements DeviceKeyHandler {
 
         void observe() {
             mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.DEVICE_PROXI_CHECK_ENABLED),
+                    Settings.System.OMNI_DEVICE_PROXI_CHECK_ENABLED),
                     false, this);
             mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.DEVICE_FEATURE_SETTINGS),
+                    Settings.System.OMNI_DEVICE_FEATURE_SETTINGS),
                     false, this);
             mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
                     GestureSettings.DEVICE_GESTURE_MAPPING_3),
@@ -186,7 +186,7 @@ public class KeyHandler implements DeviceKeyHandler {
         @Override
         public void onChange(boolean selfChange, Uri uri) {
             if (uri.equals(Settings.System.getUriFor(
-                    Settings.System.DEVICE_FEATURE_SETTINGS))){
+                    Settings.System.OMNI_DEVICE_FEATURE_SETTINGS))){
                 updateDozeSettings();
                 return;
             }
@@ -195,7 +195,7 @@ public class KeyHandler implements DeviceKeyHandler {
 
         public void update() {
             mUseProxiCheck = Settings.System.getIntForUser(
-                    mContext.getContentResolver(), Settings.System.DEVICE_PROXI_CHECK_ENABLED, 1,
+                    mContext.getContentResolver(), Settings.System.OMNI_DEVICE_PROXI_CHECK_ENABLED, 1,
                     UserHandle.USER_CURRENT) == 1;
             mDoubleTapEnabled = Settings.System.getIntForUser(
                     mContext.getContentResolver(), GestureSettings.DEVICE_GESTURE_MAPPING_3, 0,
@@ -346,7 +346,7 @@ public class KeyHandler implements DeviceKeyHandler {
 
     private void updateDozeSettings() {
         String value = Settings.System.getStringForUser(mContext.getContentResolver(),
-                    Settings.System.DEVICE_FEATURE_SETTINGS,
+                    Settings.System.OMNI_DEVICE_FEATURE_SETTINGS,
                     UserHandle.USER_CURRENT);
         if (DEBUG) Log.i(TAG, "Doze settings = " + value);
         if (!TextUtils.isEmpty(value)) {
@@ -359,23 +359,18 @@ public class KeyHandler implements DeviceKeyHandler {
         }
     }
 
-    @Override
-    public void setWindowManagerPolicy(WindowManagerPolicy policy) {
-        mPolicy = policy;
-    }
-
     private void vibe(){
         boolean doVibrate = Settings.System.getIntForUser(mContext.getContentResolver(),
-                Settings.System.DEVICE_OFF_SCREEN_GESTURE_FEEDBACK_ENABLED, 0,
+                Settings.System.OMNI_DEVICE_GESTURE_FEEDBACK_ENABLED, 0,
                 UserHandle.USER_CURRENT) == 1;
-        if (doVibrate && mPolicy != null) {
-            mPolicy.performHapticFeedbackLw(null, HapticFeedbackConstants.LONG_PRESS, true);
+        if (doVibrate) {
+            OmniVibe.performHapticFeedbackLw(HapticFeedbackConstants.LONG_PRESS, false, mContext);
         }
     }
 
     private int getSliderAction() {
         String value = Settings.System.getStringForUser(mContext.getContentResolver(),
-                    Settings.System.BUTTON_EXTRA_KEY_MAPPING,
+                    Settings.System.OMNI_BUTTON_EXTRA_KEY_MAPPING,
                     UserHandle.USER_CURRENT);
         final String defaultValue = DeviceSettings.SLIDER_DEFAULT_VALUE;
 
@@ -387,15 +382,15 @@ public class KeyHandler implements DeviceKeyHandler {
 
     private void doHandleSliderAction(boolean on) {
         if (!on) {
-            mNoMan.setZenMode(Global.ZEN_MODE_OFF_ONLY, null, TAG);
+            mNoMan.setZenMode(Global.ZEN_MODE_OFF, null, TAG);
             mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_NORMAL);
         } else {
             int action = getSliderAction();
             if (action == 0) {
-                mNoMan.setZenMode(Global.ZEN_MODE_OFF_ONLY, null, TAG);
+                mNoMan.setZenMode(Global.ZEN_MODE_OFF, null, TAG);
                 mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_NORMAL);
             } else if (action == 1) {
-                mNoMan.setZenMode(Global.ZEN_MODE_OFF_ONLY, null, TAG);
+                mNoMan.setZenMode(Global.ZEN_MODE_OFF, null, TAG);
                 mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_VIBRATE);
             } else if (action == 2) {
                 mNoMan.setZenMode(Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS, null, TAG);

@@ -91,11 +91,11 @@ public class GestureSettings extends PreferenceFragment implements
 
         mProxiSwitch = (TwoStatePreference) findPreference(KEY_PROXI_SWITCH);
         mProxiSwitch.setChecked(Settings.System.getInt(getContext().getContentResolver(),
-                Settings.System.DEVICE_PROXI_CHECK_ENABLED, 1) != 0);
+                Settings.System.OMNI_DEVICE_PROXI_CHECK_ENABLED, 1) != 0);
 
         mOffscreenGestureFeedbackSwitch = (TwoStatePreference) findPreference(KEY_OFF_SCREEN_GESTURE_FEEDBACK_SWITCH);
         mOffscreenGestureFeedbackSwitch.setChecked(Settings.System.getInt(getContext().getContentResolver(),
-                Settings.System.DEVICE_OFF_SCREEN_GESTURE_FEEDBACK_ENABLED, 0) != 0);
+                Settings.System.OMNI_DEVICE_GESTURE_FEEDBACK_ENABLED, 0) != 0);
 
         mCircleApp = (AppSelectListPreference) findPreference(KEY_CIRCLE_APP);
         String value = Settings.System.getString(getContext().getContentResolver(), DEVICE_GESTURE_MAPPING_0);
@@ -124,12 +124,12 @@ public class GestureSettings extends PreferenceFragment implements
         }
         if (preference == mProxiSwitch) {
             Settings.System.putInt(getContext().getContentResolver(),
-                    Settings.System.DEVICE_PROXI_CHECK_ENABLED, mProxiSwitch.isChecked() ? 1 : 0);
+                    Settings.System.OMNI_DEVICE_PROXI_CHECK_ENABLED, mProxiSwitch.isChecked() ? 1 : 0);
             return true;
         }
         if (preference == mOffscreenGestureFeedbackSwitch) {
             Settings.System.putInt(getContext().getContentResolver(),
-                    Settings.System.DEVICE_OFF_SCREEN_GESTURE_FEEDBACK_ENABLED, mOffscreenGestureFeedbackSwitch.isChecked() ? 1 : 0);
+                    Settings.System.OMNI_DEVICE_GESTURE_FEEDBACK_ENABLED, mOffscreenGestureFeedbackSwitch.isChecked() ? 1 : 0);
             return true;
         }
         return super.onPreferenceTreeClick(preference);

@@ -82,7 +82,7 @@ public class DeviceSettings extends PreferenceFragment implements
 
     private int getSliderAction() {
         String value = Settings.System.getString(getContext().getContentResolver(),
-                    Settings.System.BUTTON_EXTRA_KEY_MAPPING);
+                    Settings.System.OMNI_BUTTON_EXTRA_KEY_MAPPING);
         final String defaultValue = DeviceSettings.SLIDER_DEFAULT_VALUE;
 
         if (value == null) {
@@ -93,6 +93,6 @@ public class DeviceSettings extends PreferenceFragment implements
 
     private void setSliderAction(int action) {
         Settings.System.putString(getContext().getContentResolver(),
-                    Settings.System.BUTTON_EXTRA_KEY_MAPPING, String.valueOf(action));
+                    Settings.System.OMNI_BUTTON_EXTRA_KEY_MAPPING, String.valueOf(action));
     }
 }
