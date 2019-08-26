@@ -102,6 +102,7 @@ TARGET_KERNEL_SOURCE := kernel/nubia/nx609j
 TARGET_KERNEL_CONFIG := omni_nx609j_defconfig
 TARGET_KERNEL_APPEND_DTB := true
 BOARD_ROOT_EXTRA_FOLDERS := odm
+BOARD_ROOT_EXTRA_SYMLINKS := /vendor/bt_firmware:/bt_firmware /vendor/firmware_mnt:/firmware /mnt/vendor/persist:/persist
 
 # partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
