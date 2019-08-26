@@ -13,3 +13,4 @@ allow init vendor_file:file mounton;
 allow init system_file:file mounton;
 allow init unlabeled:file mounton;
 allow init vendor_file:file mounton;
+allow init sysfs_dm:file setattr;

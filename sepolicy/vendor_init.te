@@ -1,7 +1,6 @@
-allow vendor_init anr_data_file:dir { add_name create write setattr };
+allow vendor_init anr_data_file:dir { add_name create search write setattr };
 allow vendor_init cache_file:lnk_file read;
 allow vendor_init nfc_data_file:dir setattr;
-# allow vendor_init qvrd_data_file:dir setattr;
 allow vendor_init system_data_file:dir setattr;
 allow vendor_init tombstone_data_file:dir setattr;
 allow vendor_init system_data_file:dir setattr;
