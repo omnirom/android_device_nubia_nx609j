@@ -1,6 +1,6 @@
 on init
     mount none /system/etc/media_profiles_vendor.xml /vendor/etc/media_profiles_vendor.xml bind
-    mount none /system/etc/audio_policy_configuration_omni.xml /vendor/etc/audio_policy_configuration.xml bind
+    mount none /system/etc/audio_policy_configuration_omni.xml /vendor/etc/audio/audio_policy_configuration.xml bind
     mount none /system/etc/audio_effects_omni.conf /vendor/etc/audio_effects.conf bind
     mount none /dev/null /vendor/overlay/SysuiDarkTheme/SysuiDarkThemeOverlay.apk bind
     # Camera
