@@ -9,8 +9,7 @@ etc/permissions/qti_telephony_common.xml
 etc/sysconfig/qti_whitelist.xml
 -framework/com.qti.location.sdk.jar
 -framework/com.qti.snapdragon.sdk.display.jar
-#framework/com.qualcomm.qti.camera.jar
--framework/vendor.qti.hardware.fingerprint-V1.0-java.jar
+-framework/com.qualcomm.qti.camera.jar
 lib64/com.qualcomm.qti.ant@1.0.so
 lib64/com.qualcomm.qti.bluetooth_audio@1.0.so
 lib64/com.qualcomm.qti.dpm.api@1.0.so
