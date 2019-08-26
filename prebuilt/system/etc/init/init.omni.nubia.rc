@@ -32,3 +32,12 @@ on post-fs
 
     # game mode switch
     chown system system /sys/devices/soc/soc:gpio_keys/GamekeyStatus
+
+
+service dmapp /vendor/bin/dmapp
+    class late_start
+    group  system diag oem_2901 usb bluetooth
+    disabled
+    oneshot
+    override
+
