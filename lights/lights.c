@@ -269,7 +269,7 @@ static int set_light_battery(struct light_device_t* dev,
     if (red == 0 && green == 0 && blue == 0) {
         write_int(BACK_LED_EFFECT_FILE, BACK_LED_EFFECT_OFF);
     } else {
-        write_int(BACK_LED_EFFECT_FILE, BACK_LED_EFFECT_GREEN_STRIPE_FAST);
+        write_int(BACK_LED_EFFECT_FILE, BACK_LED_EFFECT_RAINBOW_FAST);
     }
     pthread_mutex_unlock(&g_lock);
     return 0;
