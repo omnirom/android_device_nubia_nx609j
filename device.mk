@@ -196,6 +196,11 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     verity_key
 
+PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
+    persist.sys.language=en \
+    persist.sys.locale=en-US \
+    persist.sys.country=US
+
 # Temporary handling
 #
 # Include config.fs get only if legacy device/qcom/<target>/android_filesystem_config.h
