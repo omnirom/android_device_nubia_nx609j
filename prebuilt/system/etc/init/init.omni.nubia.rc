@@ -10,6 +10,7 @@ on init
     mount none /system/lib64/libbinder.so /system/lib64/vndk-28/libbinder.so bind
     # Lights
     mount none /system/lib64/hw/lights.nx609j.so /vendor/lib64/hw/lights.msm8998.so bind
+    mount none /system/etc/fstab.qcom /vendor/etc/fstab.qcom bind
 
 on boot
     start ril-daemon
